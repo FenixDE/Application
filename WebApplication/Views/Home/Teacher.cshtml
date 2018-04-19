@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <!--<a href="~/Reports.html">Переход</a>-->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+
+        </div>
+    </div>
+    <div class="w3-sidebar w3-collapse" id="sidenav" style="top: 144px;">
+        <div id="leftmenuinner" style="padding-top: 2px;">
+            <div class="w3-light-grey" id="leftmenuinnerinner">
+                <ul id="my_menu">
+                    <li><a target="_top" href="#"><span>Предметы</span></a></li>
+                    <li><a target="_top" href="#"><span>Группы</span></a></li>
+                    <li><a target="_top" href="#"><span>Расписание</span></a></li>
+                </ul>
+                <br><br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
