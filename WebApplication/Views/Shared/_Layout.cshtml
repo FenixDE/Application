@@ -14,47 +14,9 @@
     </style>
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inverse navbar-fixed-top col-xs-12">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <br />
-                @Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="row">
-                @*<ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Студенту", "Student", "Home")</li>
-                    <li>@Html.ActionLink("Преподавателю", "Teacher", "Home")</li>
-                    <li>@Html.ActionLink("Структура университета", "Admin", "Home")</li>
-                </ul>*@
-                @if (@*Request.IsAuthenticated*@false)
-                {
-                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                    {
-            @Html.AntiForgeryToken()
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    @Html.ActionLink("Здравствуйте!"@*, " + User.Identity.GetUserName() + "*@, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                </li>
-                <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
-            </ul>
-                    }
-                }
-                else
-                {
-            <ul class="nav navbar-nav navbar-right">
-                @*<li>@Html.ActionLink("Регистрация", "Register", "Account")</li>*@
-                <li><a href="#" data-toggle="modal" data-target="#exampleModal">Регистрация &raquo;</a></li>                          
-                <li><a href="#" data-toggle="modal" data-target="#exampleModal1">Вход &raquo;</a></li>
-            </ul>
-                }                
-            @*@Html.Partial("_LoginPartial")*@
-            </div>
+            @Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
         </div>
     </div>
     <div class="container body-content">

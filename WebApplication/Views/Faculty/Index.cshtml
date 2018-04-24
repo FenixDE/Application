@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Факультеты</title>
+</head>
+<body>
+    <div class="navbar-inverse navbar-fixed-top col-lg-12 col-xs-12">
+        <div class="container">
+            <div class="row">
+                @Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })                
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <tr>
+            <th>Факультет</th>
+            <th></th>
+            <th>Действия</th>
+        </tr>
+        @if (ViewBag.faculties != null)
+    {
+        foreach (var faculty in ViewBag.faculties)
+        {
+            <tr>
+                <td>@faculty.Name</td>
+                <td><a href="/Faculty/Look/@faculty.ID" class="btn btn-primary">Подробнее</a></td>
+                <td><a href="/Faculty/Up/@faculty.ID" class="btn btn-primary">Изменить</a></td>
+                <td><a href="/Faculty/Del/@faculty.ID" class="btn btn-primary btn-danger">Удалить</a></td>
+            </tr>
+    }
+}
+    </table>
+    <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title" id="AddLabel">Добавление факультета</h3>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("Add", "Faculty", FormMethod.Post))
+    {
+                <div class="form-group">
+                    <label for="Abbreviation">Аббревиатура</label>
+                    <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Аббревиатура">
+                
+                    <label for="FullName">Описание</label>
+                    <input type="text" class="form-control" id="FullName" name="Info" aria-describedby="name" placeholder="Введите описание">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Добавить</button>
+                </div>
+}
+                </div>
+                </div>                
+            </div>
+        </div>
+    @*@using (Html.ActionLink("Изменить","Up"))*@ 
+    @*<div class="modal fade" id="Change" tabindex="-1" role="dialog" aria-labelledby="Change" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title" id="ChangeLabel">Изменение факультета</h3>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("Up", "Faculty", FormMethod.Post))
+    {
+                <div class="form-group">
+                    <label for="Abbreviation">Аббревиатура</label>
+                    <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Аббревиатура">
+                </div>
+                <div class="form-group">
+                    <label for="FullName">Оисание</label>
+                    <input type="text" class="form-control" id="FullName" name="Info" aria-describedby="name" placeholder="Введите описание">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Изменить</button>
+                </div>
+}
+                </div>                
+            </div>
+        </div>
+    </div>*@
+
+    @*<dl>
+            <dt>ФИТ</dt>
+            <dd>
+                Факультет Информационных Технологий
+            </dd>
+            <dt>ИВТ</dt>
+            <dd>
+                ИВТ
+            </dd>
+        </dl>*@
+    <ul class="nav navbar-nav navbar-right">
+                    <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+                </ul>
+</body>
+</html>
+

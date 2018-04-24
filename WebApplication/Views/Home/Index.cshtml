@@ -1,16 +1,48 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<div class="media-object col-md-12 col-xs-12">
+<div class="media-object col-lg-12 col-xs-12">
     <h1>Кыргызский Государственный Технический Университет им. Раззакова</h1>
     <p class="lead">КГТУ</p>
     <p><a href="https://kstu.kg/" class="btn btn-primary btn-lg">Узнать больше &raquo;</a></p>
-    @Html.ActionLink("Факультет", "Faculty", "Faculty")
-    @*<p><a href="~/Views/Faculty/Faculty.cshtml" class="btn btn-primary btn-lg"> &raquo;</a></p>*@
-    @*<form action="/search/" class="search" method="get">
-            <input type="text" class="input-text" name="q" value="">
-            <input type="submit" class="btn">
-        </form>*@
+</div>
+<div class="navbar-inverse navbar-fixed-top col-lg-12 col-xs-12">
+    <div class="container">
+        <div class="row">
+            @Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @*<ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Студенту", "Student", "Home")</li>
+                <li>@Html.ActionLink("Преподавателю", "Teacher", "Home")</li>
+                <li>@Html.ActionLink("Структура университета", "Admin", "Home")</li>
+            </ul>*@
+                @if (@*Request.IsAuthenticated*@false)
+{
+using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+{
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Здравствуйте!"@*, " + User.Identity.GetUserName() + "*@, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
+        </ul>
+}
+}
+else
+{
+        <div class="col-lg-12 col-xs-12">
+            <ul class="nav navbar-nav navbar-right">
+                @*<li>@Html.ActionLink("Регистрация", "Register", "Account")</li>*@
+                <li><a class="btn btn-block btn-sm" data-toggle="modal" data-target="#exampleModal">Регистрация &raquo;</a></li>
+                <li><a class="btn btn-block btn-sm" data-toggle="modal" data-target="#exampleModal1">Вход &raquo;</a></li>
+            </ul>
+        </div>
+
+}
+                @*@Html.Partial("_LoginPartial")*@
+            </div>
+    </div>    
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
@@ -23,42 +55,42 @@
             </div>
             <div class="modal-body">
                 @using (Html.BeginForm("Register", "Account", FormMethod.Post))
-    {
-            <div class="form-group">
-                <label for="exampleInput">Номер зачётки или паспорта, ключевое слово</label>
-                <input type="text" name="number" class="form-control" id="exampleInput" aria-describedby="name" placeholder="Введите номер">
-                @*<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>*@
+                {
+                    <div class="form-group">
+                        <label for="exampleInput">Номер зачётки или паспорта, ключевое слово</label>
+                        <input type="text" name="number" class="form-control" id="exampleInput" aria-describedby="name" placeholder="Введите номер">
+                        @*<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>*@
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword">Пароль</label>
+                        <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword">Подтвердите пароль</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    @*<div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        </div>*@
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                }
             </div>
-            <div class="form-group">
-                <label for="exampleInputPassword">Пароль</label>
-                <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword">Подтвердите пароль</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            @*<div class="form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>*@
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-            </div>
-}
-            </div>
-            
+
         </div>
-   </div>
+    </div>
 </div>
-<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModal1" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title" id="exampleModalLabel">Авторизация</h3>
+                <h3 class="modal-title" id="exampleModal1Label">Авторизация</h3>
             </div>
             <div class="modal-body">
                 <form>
@@ -70,7 +102,7 @@
                     <div class="form-group">
                         <label for="exampleInputPassword">Пароль</label>
                         <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password">
-                    </div>                    
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">

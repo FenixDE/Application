@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Look";
+}
+
+<h2>Look</h2>
+    @if (ViewBag.faculties != null)
+    {
+        foreach (var faculty in ViewBag.faculties)
+        {
+        <tr>
+            <td><a href="/Faculty/Look/@faculty.ID" class="btn btn-primary">Подробнее</a></td>
+            <td><a href="/Faculty/Up/@faculty.ID" class="btn btn-primary">Изменить</a></td>
+        </tr>
+        }
+    }
