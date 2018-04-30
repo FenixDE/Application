@@ -2,15 +2,22 @@
 @{
     ViewBag.Title = "Look";
 }
+    <div class="row">
+        <div class="col-md-3">
 
-<h2>Look</h2>
-    @if (ViewBag.faculties != null)
-    {
-        foreach (var faculty in ViewBag.faculties)
-        {
-        <tr>
-            <td><a href="/Faculty/Look/@faculty.ID" class="btn btn-primary">Подробнее</a></td>
-            <td><a href="/Faculty/Up/@faculty.ID" class="btn btn-primary">Изменить</a></td>
-        </tr>
-        }
-    }
+        </div>
+        <div class="col-md-7">
+            @if (ViewBag.faculty != null)
+            {
+                <p><h1>@ViewBag.faculty.Name</h1></p>
+                <p><h2>Декан: @ViewBag.faculty.DekanId</h2></p>
+                <p>@ViewBag.faculty.Info</p>
+                <tr>
+                    <td><a href="/Faculty/Up/@ViewBag.faculty.ID" class="btn btn-primary">Изменить</a></td>
+                </tr>
+            }
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>

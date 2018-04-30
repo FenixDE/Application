@@ -1,12 +1,15 @@
 ﻿//using ElJournal.DBInteract;
 //using NLog;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-
-namespace ElJournal.Models
+using System.Net;
+using System.Threading;
+namespace WebApplication.Models
 {
     public class Group
     {
@@ -24,7 +27,12 @@ namespace ElJournal.Models
         /// <returns></returns>
         public static async Task<Group> GetInstanceAsync(string id)
         {
-            return null;
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}", id));
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+            Group groups = result.Data.ToObject<Group>();
+            return groups;
         }
 
         /// <summary>
@@ -33,7 +41,11 @@ namespace ElJournal.Models
         /// <returns></returns>
         public static async Task<List<Group>> GetCollectionAsync()
         {
-            return null;
+            var client = new RestClient("http://eljournal.ddns.net/api/Groups");
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+            return result.Data;
         }
         
 
@@ -63,6 +75,16 @@ namespace ElJournal.Models
         /// <returns>True, если объект был добавлен в БД</returns>
         public async Task<bool> Push()
         {
+            string faculty = JsonConvert.SerializeObject(this);
+            var client = new RestClient("http://eljournal.ddns.net/api/Groups");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            request.AddParameter("undefined", faculty, ParameterType.RequestBody);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
+            //IRestResponse response = client.Execute(request);
             return false;
         }
 
@@ -72,6 +94,15 @@ namespace ElJournal.Models
         /// <returns></returns>
         public async Task<bool> Update()
         {
+            string group = JsonConvert.SerializeObject(this);
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}", ID));
+            var request = new RestRequest(Method.PUT);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            request.AddParameter("undefined", group, ParameterType.RequestBody);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
             return false;
         }
 
@@ -81,7 +112,15 @@ namespace ElJournal.Models
         /// <returns></returns>
         public bool Delete()
         {
-            return false;
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}", ID));
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
     }
 }

@@ -8,27 +8,18 @@
     <title>Факультеты</title>
 </head>
 <body>
-    <div class="navbar-inverse navbar-fixed-top col-lg-12 col-xs-12">
-        <div class="container">
-            <div class="row">
-                @Html.ActionLink("Главная", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })                
-            </div>
-        </div>
-    </div>
     <table class="table table-hover">
         <tr>
             <th>Факультет</th>
             <th></th>
-            <th>Действия</th>
+            <th>Действие</th>
         </tr>
         @if (ViewBag.faculties != null)
     {
         foreach (var faculty in ViewBag.faculties)
         {
             <tr>
-                <td>@faculty.Name</td>
-                <td><a href="/Faculty/Look/@faculty.ID" class="btn btn-primary">Подробнее</a></td>
-                <td><a href="/Faculty/Up/@faculty.ID" class="btn btn-primary">Изменить</a></td>
+                <td><a href="/Faculty/Faculty/@faculty.ID">@faculty.Name</a></td>
                 <td><a href="/Faculty/Del/@faculty.ID" class="btn btn-primary btn-danger">Удалить</a></td>
             </tr>
     }

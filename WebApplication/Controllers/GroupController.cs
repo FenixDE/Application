@@ -9,38 +9,37 @@ using System.Threading.Tasks;
 
 namespace WebApplication.Controllers
 {
-    public class FacultyController : Controller
+    public class GroupController : Controller
     {
-        // GET: Faculty
+        // GET: Group
         public async Task<ActionResult> Index()
         {
             string fileURL = ConfigurationManager.AppSettings["RequestPath"];
-            ViewBag.faculties = await Models.Faculty.GetCollectionAsync();
+            ViewBag.groups = await Models.Group.GetCollectionAsync();
             return View();
         }
-
         [HttpPost]
-        public async Task<ActionResult> Add(Faculty faculty)
+        public async Task<ActionResult> Add(Group group)
         {
-            await faculty.Push();
+            await group.Push();
             return Redirect("Index");
         }
 
         [HttpGet]
         public async Task<ActionResult> Del(string ID)
         {
-            Faculty faculty = new Faculty();
-            faculty.ID = ID;
-            if (faculty?.Delete() ?? false)
-                return Redirect("/Faculty");
+            Group group = new Group();
+            group.ID = ID;
+            if (group?.Delete() ?? false)
+                return Redirect("/Group");
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
         [HttpPost] //
-        public async Task<ActionResult> Up(Faculty faculty)
-        { 
-            await faculty.Update();
-            return Redirect("/Faculty");
+        public async Task<ActionResult> Up(Group group)
+        {
+            await group.Update();
+            return Redirect("/Index");
         }
         [HttpGet] //по ID cnhfybwf c ajhv
         public async Task<ActionResult> Up(string ID)
@@ -49,15 +48,15 @@ namespace WebApplication.Controllers
             //subjects = subjects.FindAll(x => x.DepartmentID == department); делегат
             //faculty.ID = ID;
             //Faculty.GetInstanceAsync(ID);
-            Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
-            faculty.ID = ID;
-            ViewBag.faculty = faculty; //запись полей
+            Group group = await Models.Department.GetInstanceAsync(ID);
+            group.ID = ID;
+            ViewBag.department = group; //запись полей
             return View();
         }
-        public async Task<ActionResult> Faculty(string ID)
+        public async Task<ActionResult> Group(string ID)
         {
-            Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
-            ViewBag.faculty = faculty;
+            Group group = await Models.Group.GetInstanceAsync(ID);
+            ViewBag.group = group;
             return View("Look");
         }
     }

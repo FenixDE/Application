@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Look";
+}
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-7">
+            @if (ViewBag.semester != null)
+    {
+        <p><h1>@ViewBag.semester.Name</h1></p>
+        <p><h2>Дата начала: @ViewBag.semester.StartDate</h2></p>
+        <p><h2>Дата конца: @ViewBag.semester.EndDate</h2></p>
+        <p><h2>Дата начала сессии: @ViewBag.semester.SessionStart</h2></p>
+        <p><h2>Дата конца сессии: @ViewBag.semester.SessionEnd</h2></p>
+        <p><a href="/Semester/Up/@ViewBag.semester.ID" class="btn btn-primary">Изменить</a></p>
+}
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>

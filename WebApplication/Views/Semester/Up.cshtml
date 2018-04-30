@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Up";
+}
+
+@using (Html.BeginForm("Up", "Semester", FormMethod.Post))
+{
+    <label for="Name">Название</label>
+    <input type="text" class="form-control" id="Name" name="Name" aria-describedby="name" placeholder="Введите название"
+           value="@ViewBag.semester.Name" />
+    <label for="StartDate">Дата начала</label>
+    <input type="date" class="form-control" id="StartDate" name="StartDate" aria-describedby="StartDate" placeholder="Выберете дату начала"
+           value="@ViewBag.semester.StartDate" />
+    <label for="EndDate">Дата конца</label>
+    <input type="date" class="form-control" id="EndDate" name="EndDate" aria-describedby="EndDate" placeholder="Выберете дату конца"
+           value="@ViewBag.semester.EndDate" />
+    <label for="SessionStart">Дата начала сессии</label>
+    <input type="date" class="form-control" id="SessionStart" name="SessionStart" aria-describedby="SessionStart" placeholder="Выберете дату начала сессии"
+           value="@ViewBag.semester.SessionStart" />
+    <label for="SessionEnd">Дата конца сессии</label>
+    <input type="date" class="form-control" id="SessionEnd" name="SessionEnd" aria-describedby="SessionEnd" placeholder="Выберете дату конца сессии"
+           value="@ViewBag.semester.SessionEnd" />
+    <input type="hidden" value="@ViewBag.semester.ID" />
+    <input type="submit" class="btn btn-submit" value="Изменить" />
+}
+

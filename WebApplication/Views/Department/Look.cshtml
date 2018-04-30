@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Look";
+}
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-7">
+            @if (ViewBag.department != null)
+            {
+                <p><h1>@ViewBag.department.Name</h1></p>
+                <p><h2>Декан: @ViewBag.department.ManagerId</h2></p>
+                <p>@ViewBag.department.Info</p>
+                <tr>
+                    <td><a href="/Department/Up/@ViewBag.department.ID" class="btn btn-primary">Изменить</a></td>
+                </tr>
+            }
+        </div>
+        <div class="col-md-2">
+
+        </div>
+    </div>

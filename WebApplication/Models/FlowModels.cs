@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace ElJournal.Models
+namespace WebApplication.Models
 {
     public class Flow
     {

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Up";
+}
+
+@using (Html.BeginForm("Up", "Department", FormMethod.Post))
+{
+    <label for="Name">Название</label>
+    <input type="text" class="form-control" id="Name" name="Name" aria-describedby="name" placeholder="Введите название"
+           value="@ViewBag.department.Name" />
+       <label for="Info">Описание</label>   
+       <input type="text" class="form-control" id="Info" name="Info" aria-describedby="info" placeholder="Введите название"
+           value="@ViewBag.department.Info" />
+       <input type="hidden" value="@ViewBag.department.ID" />
+       <input type="submit" class="btn btn-submit" value="Изменить" />
+}
+
