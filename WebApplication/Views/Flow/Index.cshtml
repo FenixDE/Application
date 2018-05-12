@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Flow";
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Потоки</title>
+</head>
+<body>   
+    <table class="table table-hover">
+        <tr>
+            <th>Поток</th>
+            <th>Действие</th>
+        </tr>
+        @if (ViewBag.flows != null)
+        {
+            foreach (var flow in ViewBag.flows)
+            {
+                <tr>
+                    <td><a href="/Flow/Flow/@flow.ID">@flow.Name</a></td>
+                    <td><a href="/Flow/Del/@flow.ID" class="btn btn-primary btn-danger">Удалить</a></td>
+                </tr>
+            }
+        }
+    </table>
+    <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title" id="AddLabel">Добавление потока</h3>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("Add", "Flow", FormMethod.Post))
+                    {
+                    <div class="form-group">
+                        <label for="Abbreviation">Название</label>
+                        <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Поток">
+
+                        <label for="AltName">Альтернативное имя</label>
+                        <input type="text" class="form-control" id="AltName" name="AltName" aria-describedby="name" placeholder="Введите альт. имя">
+                        @*@foreach (var department in ViewBag.departments)
+                        {
+                            <select name="menu" size="1">
+                                <option>@department.Name</option>
+                            </select>
+                        }*@
+                        <label for="Department">Кафедра</label>
+        <input type="text" class="form-control" id="Department" name="DepartmentId" aria-describedby="department" placeholder="Введите кафедру">
+                    </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        </div>
+                    }
+                    </div>
+            </div>
+        </div>
+    </div>    
+    <ul class="nav navbar-nav navbar-right">
+        <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+    </ul>
+</body>
+</html>

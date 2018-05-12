@@ -1,10 +1,12 @@
-﻿//using ElJournal.DBInteract;
-//using NLog;
+﻿using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Net;
+using System.Threading;
 
 namespace WebApplication.Models
 {
@@ -13,16 +15,21 @@ namespace WebApplication.Models
         public string ID { get; set; }
         public string Name { get; set; }
         public string AltName { get; set; }
-        public string FacultyId { get; set; }
+        public string DepartmentId { get; set; }
 
         /// <summary>
         /// Возвращает поток по id
         /// </summary>
         /// <param name="id">id предмета</param>
-        /// <returns></returns>
+        /// <returns></returns>        
         public static async Task<Flow> GetInstanceAsync(string id)
-        {            
-                    return null;            
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Flows/{0}", id));
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+            Flow flows = result.Data.ToObject<Flow>();
+            return flows;
         }
 
         /// <summary>
@@ -31,7 +38,15 @@ namespace WebApplication.Models
         /// <returns></returns>
         public static async Task<List<Flow>> GetCollectionAsync()
         {
-            return null;
+            var client = new RestClient("http://eljournal.ddns.net/api/Flows");
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+            List<Flow> flows = result.Data.ToObject<List<Flow>>();
+            if (response.StatusCode == HttpStatusCode.OK)
+                return flows;
+            else
+                return new List<Flow>();
         }
 
 
@@ -41,6 +56,15 @@ namespace WebApplication.Models
         /// <returns>True, если объект был добавлен в БД</returns>
         public async Task<bool> Push()
         {
+            string subject = JsonConvert.SerializeObject(this);
+            var client = new RestClient("http://eljournal.ddns.net/api/Flows");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            request.AddParameter("undefined", subject, ParameterType.RequestBody);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
             return false;
         }
 
@@ -50,7 +74,19 @@ namespace WebApplication.Models
         /// <returns></returns>
         public async Task<bool> Update()
         {
-            return false;
+            string flow = JsonConvert.SerializeObject(this);
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Flows/{0}", ID));
+            var request = new RestRequest(Method.PUT);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            request.AddParameter("undefined", flow, ParameterType.RequestBody);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
@@ -59,7 +95,15 @@ namespace WebApplication.Models
         /// <returns></returns>
         public bool Delete()
         {
-            return false;
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Flows/{0}", ID));
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
     }
 }

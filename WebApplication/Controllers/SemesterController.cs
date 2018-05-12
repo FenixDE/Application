@@ -11,7 +11,7 @@ namespace WebApplication.Controllers
 {
     public class SemesterController : Controller
     {
-        // GET: Semester
+        // GET: Semester        
         public async Task<ActionResult> Index()
         {
             string fileURL = ConfigurationManager.AppSettings["RequestPath"];
@@ -22,7 +22,7 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(Semester semester)
         {
-            await semester.Push();
+            bool result = await semester.Push();
             return Redirect("Index");
         }
 
@@ -42,19 +42,22 @@ namespace WebApplication.Controllers
             await semester.Update();
             return Redirect("/Index");
         }
-        [HttpGet] //по ID cnhfybwf c ajhv
+        [HttpGet] 
         public async Task<ActionResult> Up(string ID)
         {
             Semester semester = await Models.Semester.GetInstanceAsync(ID);
             semester.ID = ID;
-            ViewBag.department = semester; //запись полей
+            ViewBag.semester = semester; //запись полей
             return View();
         }
-        public async Task<ActionResult> Semester(string ID)
+        public async Task<ActionResult> Semester(string ID, string gId)
         {
             Semester semester = await Models.Semester.GetInstanceAsync(ID);
             ViewBag.semester = semester;
+            var students = await Student.GetCollectionAsync(ID, gId);
+            students = students.FindAll(x => x.SemesterId == semester.ID);
+            ViewBag.students = students;
             return View("Look");
-        }
+        }        
     }
 }

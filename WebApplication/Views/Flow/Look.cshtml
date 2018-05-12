@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Look";
+}
+<div class="row">
+    <div class="col-md-7">
+        @if (ViewBag.flow != null)
+        {
+            <p><h1>@ViewBag.flow.Name</h1></p>
+            @*<p><h2>Кафедра: @ViewBag.department.Name</h2></p>*@
+            <p>@ViewBag.flow.AltName</p>
+            <tr>
+                <td><a href="/Flow/Up/@ViewBag.flow.ID" class="btn btn-primary">Изменить</a></td>
+            </tr>
+        }
+    </div>
+    <div class="col-md-3">
+        @if (ViewBag.flows != null)
+        {
+            <p><h2>Потоки: </h2></p>
+            foreach (var flow in ViewBag.flows)
+            {
+                <p>
+                    <a href="/Flow/Flow/@flow.ID" class="btn btn-primary">@flow.Name</a>
+                    <a href="/Flow/Del/@flow.ID" class="btn btn-primary btn-danger">Удалить</a>
+                </p>
+            }
+        }
+    </div>
+</div>

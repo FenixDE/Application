@@ -21,8 +21,31 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(Group group)
         {
-            await group.Push();
-            return Redirect("Index");
+            bool result = await group.Push();
+            return Redirect("/Faculty");
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddToSemester(string id, string semesterid)
+        {
+            Group group = await Models.Group.GetInstanceAsync(id);
+            group.ID = id;
+            ViewBag.group = group;
+            Semester semester = await Semester.GetInstanceAsync(semesterid);
+            semester.ID = semesterid;
+            ViewBag.semester = semester;
+            bool result = await group.AddToSemester(id, semesterid);
+            return Redirect(String.Format("/Group/Group/{0}",id));
+        }
+        public async Task<ActionResult> DeleteToSemester(string id, string semesterid)
+        {
+            Group group = await Models.Group.GetInstanceAsync(id);
+            group.ID = id;
+            ViewBag.group = group;
+            Semester semester = await Semester.GetInstanceAsync(semesterid);
+            semester.ID = semesterid;
+            ViewBag.semester = semester;
+            group.DeleteToSemester(id, semesterid);
+            return Redirect(String.Format("/Group/Group/{0}", id));
         }
 
         [HttpGet]
@@ -31,7 +54,7 @@ namespace WebApplication.Controllers
             Group group = new Group();
             group.ID = ID;
             if (group?.Delete() ?? false)
-                return Redirect("/Group");
+                return Redirect("/Faculty");
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
@@ -39,25 +62,34 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Up(Group group)
         {
             await group.Update();
-            return Redirect("/Index");
+            return Redirect("/Faculty");
         }
         [HttpGet] //по ID cnhfybwf c ajhv
         public async Task<ActionResult> Up(string ID)
         {
-            //Faculty faculty = new Faculty();
-            //subjects = subjects.FindAll(x => x.DepartmentID == department); делегат
-            //faculty.ID = ID;
-            //Faculty.GetInstanceAsync(ID);
-            Group group = await Models.Department.GetInstanceAsync(ID);
-            group.ID = ID;
-            ViewBag.department = group; //запись полей
-            return View();
-        }
-        public async Task<ActionResult> Group(string ID)
-        {
             Group group = await Models.Group.GetInstanceAsync(ID);
-            ViewBag.group = group;
-            return View("Look");
+            if (ID != null)
+            {
+                group.ID = ID;
+                ViewBag.group = group; //запись полей
+                return View();
+            }
+            else return View("~/Views/Shared/Error.cshtml");
+        }
+        public async Task<ActionResult> Group(string ID, string gId)
+        {
+            if (ID != null)
+            {
+                Group group = await Models.Group.GetInstanceAsync(ID);
+                ViewBag.group = group;
+                List<Semester> semesters = await Semester.GetCollectionAsync();
+                ViewBag.semesters = semesters;
+                //var students = await Student.GetCollectionAsync(ID, gId);
+                //students = students.FindAll(x => x.GroupId == group.ID);
+                //ViewBag.students = students;
+                return View("Look");
+            }
+            else return View("~/Views/Shared/Error.cshtml");
         }
     }
 }

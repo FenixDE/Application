@@ -8,80 +8,68 @@ using System.Web;
 using System.Net;
 using System.Threading;
 
+
 namespace WebApplication.Models
 {
-    public class Department
+    public class Subject
     {
         public string ID { get; set; }
         public string Name { get; set; }
-        public string ManagerId { get; set; }
+        public string DepartmentID { get; set; }
         public string Info { get; set; }
-        
-        /// <summary>
-        /// Возвращает кафедру по id
-        /// </summary>
-        /// <param name="id">id факультета</param>
-        /// <returns></returns>
+        public string Cypher { get; set; }
+
+
         public static async Task<dynamic> GetInstanceAsync(string id)
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Departments/{0}", id));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Subjects/{0}", id));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Department departments = result.Data.ToObject<Department>();
-            return departments;
+            Subject subjects = result.Data.ToObject<Subject>();
+            return subjects;
         }
 
-        /// <summary>
-        /// Возвращает полный список кафедр
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<dynamic> GetCollectionAsync()
+        
+        public static async Task<List<Subject>> GetCollectionAsync()
         {
-            var client = new RestClient("http://eljournal.ddns.net/api/Departments");
+            var client = new RestClient("http://eljournal.ddns.net/api/Subjects");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            //List<Department> departments = result.Data.ToObject <List<Department>>();
-            //List<dynamic> departments = result.Data as List<dynamic>;
+            List<Subject> subjects = result.Data.ToObject <List<Subject>>();
             if (response.StatusCode == HttpStatusCode.OK)
-                return result.Data;
+                return subjects;
             else
-                return new List<Department>();
+                return new List<Subject>();
         }
 
-        /// <summary>
-        /// Сохраняет текущий объект Department в БД
-        /// </summary>
-        /// <returns>True, если объект был добавлен в БД</returns>
+        
         public async Task<bool> Push()
         {
-            string department = JsonConvert.SerializeObject(this);
-            var client = new RestClient("http://eljournal.ddns.net/api/Departments");
+            string subject = JsonConvert.SerializeObject(this);
+            var client = new RestClient("http://eljournal.ddns.net/api/Subjects");
             var request = new RestRequest(Method.POST);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            request.AddParameter("undefined", department, ParameterType.RequestBody);
+            request.AddParameter("undefined", subject, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
                                                                                                                 //IRestResponse response = client.Execute(request);
             return false;
         }
 
-        /// <summary>
-        /// Обновляет в БД выбранный объект (по ID)
-        /// </summary>
-        /// <returns></returns>
+        
         public async Task<bool> Update()
         {
-            string department = JsonConvert.SerializeObject(this);
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Departments/{0}", ID));
+            string subject = JsonConvert.SerializeObject(this);
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Subjects/{0}", ID));
             var request = new RestRequest(Method.PUT);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            request.AddParameter("undefined", department, ParameterType.RequestBody);
+            request.AddParameter("undefined", subject, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
             if (restResponse.StatusCode == HttpStatusCode.OK)
@@ -90,13 +78,10 @@ namespace WebApplication.Models
                 return false;
         }
 
-        /// <summary>
-        /// Удаление текущего объекта из БД
-        /// </summary>
-        /// <returns></returns>
+        
         public bool Delete()
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Departments/{0}", ID));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Subjects/{0}", ID));
             var request = new RestRequest(Method.DELETE);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");

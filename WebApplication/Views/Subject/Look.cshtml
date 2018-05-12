@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Look";
+}
+<div class="row">
+    <div class="col-md-7">
+        @if (ViewBag.subject != null)
+    {
+        <p><h1>@ViewBag.subject.Name</h1></p>
+        @*<p><h2>Кафедра: @ViewBag.dep.Name</h2></p>*@        
+        <p>@ViewBag.subject.Info</p>
+    <tr>
+        <td><a href="/Subject/Up/@ViewBag.subject.ID" class="btn btn-primary">Изменить</a></td>
+    </tr>
+}
+    </div>
+    @*<div class="col-md-3">
+        @if (ViewBag.subjects != null)
+        {
+            <p><h2>Предметы: </h2></p>
+            foreach (var subject in ViewBag.subjects)
+            {
+                <p>
+                    <a href="/Subject/Subject/@subject.ID" class="btn btn-primary">@subject.Name</a>
+                    <a href="/Subject/Del/@subject.ID" class="btn btn-primary btn-danger">Удалить</a>
+                </p>
+            }
+        }
+    </div>*@
+</div>

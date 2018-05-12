@@ -10,73 +10,80 @@ using System.Threading;
 
 namespace WebApplication.Models
 {
-    public class Semester
+    public class Person
     {
         public string ID { get; set; }
+        public string Surname { get; set; }
+        public string Patronymic { get; set; }
         public string Name { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }        
-        public DateTime? SessionStart { get; set; }
-        public DateTime? SessionEnd { get; set; }
-        //public string Semesters { get; set; }
+        public string Student_id { get; set; }
+        public string Passport_id { get; set; }
+        public string Secret { get; set; }
+        public string Info { get; set; }
+        public string RoleId { get; set; }
 
-
-        /// <summary>
-        /// Возвращает группу по id
-        /// </summary>
-        /// <param name="id">id группы</param>
-        /// <returns></returns>        
-        public static async Task<dynamic> GetInstanceAsync(string id)
+        public static async Task<Person> GetInstanceAsync(string id)
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Semester/{0}", id));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/People/{0}", id));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Semester semesters = result.Data.ToObject<Semester>();
-            return semesters;
+            Person people = result.Data.ToObject<Person>();
+            return people;
         }
-        public static async Task<dynamic> GetCollectionAsync()
+
+        
+        public static async Task<List<Person>> GetCollectionAsync()
         {
-            var client = new RestClient("http://eljournal.ddns.net/api/Semester");
+            var client = new RestClient("http://eljournal.ddns.net/api/People");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            //return result.Data;
-            List<Semester> semesters = result.Data.ToObject<List<Semester>>();
+            List<Person> people = result.Data.ToObject<List<Person>>();
             if (response.StatusCode == HttpStatusCode.OK)
-                return semesters;
+                return people;
             else
-                return new List<Semester>();
+                return new List<Person>();
         }
+
+
+        
         public async Task<bool> Push()
         {
-            string semester = JsonConvert.SerializeObject(this);
-            var client = new RestClient("http://eljournal.ddns.net/api/Semester");
+            string subject = JsonConvert.SerializeObject(this);
+            var client = new RestClient("http://eljournal.ddns.net/api/People");
             var request = new RestRequest(Method.POST);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            request.AddParameter("undefined", semester, ParameterType.RequestBody);
+            request.AddParameter("undefined", subject, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
-            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод //IRestResponse response = client.Execute(request);            
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
             return false;
         }
+
+        
         public async Task<bool> Update()
         {
-            string semester = JsonConvert.SerializeObject(this);
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Semester/{0}", ID));
+            string person = JsonConvert.SerializeObject(this);
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/People/{0}", ID));
             var request = new RestRequest(Method.PUT);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            request.AddParameter("undefined", semester, ParameterType.RequestBody);
+            request.AddParameter("undefined", person, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-            return false;
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
+
+        
         public bool Delete()
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Semester/{0}", ID));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/People/{0}", ID));
             var request = new RestRequest(Method.DELETE);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
@@ -85,6 +92,6 @@ namespace WebApplication.Models
                 return true;
             else
                 return false;
-        }        
+        }
     }
 }

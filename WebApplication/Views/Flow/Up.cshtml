@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Up";
+}
+
+<div class="row">
+    @using (Html.BeginForm("Up", "Flow", FormMethod.Post))
+    {
+        <label for="Name">Название</label>
+        <input type="text" class="form-control" id="Name" name="Name" aria-describedby="name" placeholder="Введите название"
+               value="@ViewBag.flow.Name" />
+        <label for="Info">Альт. имя</label>
+        <input type="text" class="form-control" id="Info" name="AltName" aria-describedby="info" placeholder="Введите название"
+               value="@ViewBag.flow.AltName" />
+        <input type="hidden" value="@ViewBag.flow.ID" />
+        <input type="submit" class="btn btn-submit" value="Изменить" />
+    }
+</div>
+

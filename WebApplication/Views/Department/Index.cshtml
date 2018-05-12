@@ -8,13 +8,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Кафедры</title>
 </head>
-<body>   
+<body>
     <table class="table table-hover">
         <tr>
             <th>Кафедра</th>
-            <th></th>
             <th>Действие</th>
         </tr>
+
         @if (ViewBag.departments != null)
         {
             foreach (var department in ViewBag.departments)
@@ -33,7 +33,7 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title" id="AddLabel">Добавление факультета</h3>
+                    <h3 class="modal-title" id="AddLabel">Добавление кафедры</h3>
                 </div>
                 <div class="modal-body">
                     @using (Html.BeginForm("Add", "Department", FormMethod.Post))
@@ -44,6 +44,8 @@
 
                             <label for="FullName">Описание</label>
                             <input type="text" class="form-control" id="FullName" name="Info" aria-describedby="name" placeholder="Введите описание">
+                            <label for="ManagerId">ManagerId</label>
+                            <input type="text" class="form-control" id="ManagerId" name="ManagerId" aria-describedby="Manager" placeholder="Введите описание">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
@@ -53,9 +55,12 @@
                 </div>
             </div>
         </div>
-    </div>    
-    <ul class="nav navbar-nav navbar-right">
-        <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
-    </ul>
+    </div>
+    <div class="row">
+        <div class="nav navbar-nav navbar-right">
+            <b><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></b>            
+        </div>
+        <div class="btn btn-default btn-lg"><b>@Html.ActionLink("Список потоков", "Index", "Flow")</b></div>
+    </div>
 </body>
 </html>

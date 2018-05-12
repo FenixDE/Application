@@ -18,7 +18,7 @@ namespace WebApplication.Models
         public string Description { get; set; }
         public string CuratorId { get; set; }
         public string FacultyId { get; set; }
-        //public List<Semester> Semesters { get; set; }
+        public List<Semester> Semesters { get; set; }
 
         /// <summary>
         /// Возвращает группу по id
@@ -32,7 +32,10 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             Group groups = result.Data.ToObject<Group>();
-            return groups;
+            if (response.StatusCode == HttpStatusCode.OK)
+                return groups;
+            else
+                return null;
         }
 
         /// <summary>
@@ -45,18 +48,42 @@ namespace WebApplication.Models
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            return result.Data;
+            List<Group> groups = result.Data.ToObject <List<Group>>();
+            if (response.StatusCode == HttpStatusCode.OK)
+                return groups;
+            else
+                return new List<Group>();
         }
-        
+
+
+        public static async Task<List<Group>> GetGroupSemester(string semesterId)
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/BySemester/{0}",semesterId));
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+            List<Group> groups = result.Data.ToObject<List<Group>>();
+            return groups;
+        }
 
         /// <summary>
         /// Добавляет группу на указанный семестр
         /// </summary>
         /// <param name="semesterId">id семестра</param>
         /// <returns></returns>
-        public async Task<bool> AddToSemester(string semesterId)
+        public async Task<bool> AddToSemester(string id, string semesterid)
         {
-            return false;
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}/{0}", id, semesterid));
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            //var cancellationTokenSource = new CancellationTokenSource();
+            //IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод           
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
@@ -64,9 +91,17 @@ namespace WebApplication.Models
         /// </summary>
         /// <param name="semesterId">id семестра</param>
         /// <returns></returns>
-        public bool DeleteToSemester(string semesterId)
+        public bool DeleteToSemester(string id, string semesterid)
         {
-            return false;
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}/{0}", id, semesterid));
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
@@ -75,17 +110,20 @@ namespace WebApplication.Models
         /// <returns>True, если объект был добавлен в БД</returns>
         public async Task<bool> Push()
         {
-            string faculty = JsonConvert.SerializeObject(this);
+            string group = JsonConvert.SerializeObject(this);
             var client = new RestClient("http://eljournal.ddns.net/api/Groups");
             var request = new RestRequest(Method.POST);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            request.AddParameter("undefined", faculty, ParameterType.RequestBody);
+            request.AddParameter("undefined", group, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
             //IRestResponse response = client.Execute(request);
-            return false;
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>

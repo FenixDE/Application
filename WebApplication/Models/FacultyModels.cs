@@ -44,7 +44,10 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             //List<dynamic> faculties = result.Data as List<dynamic>;
-            return result.Data;
+            if (response.StatusCode == HttpStatusCode.OK)
+                return result.Data;
+            else
+                return false;
         }
 
         /// <summary>

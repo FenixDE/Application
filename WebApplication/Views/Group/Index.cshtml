@@ -18,11 +18,11 @@
     {
         foreach (var group in ViewBag.groups)
         {
-            <tr>
-                <td><a href="/Group/Group/@group.ID">@group.Name</a></td>
-                <td><a href="/Group/Del/@group.ID" class="btn btn-primary btn-danger">Удалить</a></td>
-            </tr>
-    }
+        <tr>
+            <td><a href="/Group/Group/@group.ID">@group.Name</a></td>
+            <td><a href="/Group/Del/@group.ID" class="btn btn-primary btn-danger">Удалить</a></td>
+        </tr>
+    }    
 }
     </table>
     <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
@@ -32,18 +32,22 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title" id="AddLabel">Добавление факультета</h3>
+                    <h3 class="modal-title" id="AddLabel">Добавление группы</h3>
                 </div>
                 <div class="modal-body">
                     @using (Html.BeginForm("Add", "Group", FormMethod.Post))
     {
-                <div class="form-group">
-                    <label for="Abbreviation">Аббревиатура</label>
-                    <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Аббревиатура">
-                
-                    <label for="FullName">Описание</label>
-                    <input type="text" class="form-control" id="FullName" name="Info" aria-describedby="name" placeholder="Введите описание">
-                </div>
+                    <div class="form-group">
+                        <label for="Name">Название</label>
+                        <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Введите название">
+
+                        <label for="Description">Описание</label>
+                        <input type="text" class="form-control" id="Description" name="Description" aria-describedby="Description" placeholder="Введите описание">
+                        <label for="FacultyId">Факультет</label>
+                        <input type="text" class="form-control" id="FacultyId" name="FacultyId" aria-describedby="FacultyId" placeholder="">
+                        <label for="CuratorId">Curator</label>
+                        <input type="text" class="form-control" id="CuratorId" name="CuratorId" aria-describedby="CuratorId" placeholder="">
+                    </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                     <button type="submit" class="btn btn-primary">Добавить</button>

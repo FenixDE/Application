@@ -40,7 +40,7 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Up(Department department)
         {
             await department.Update();
-            return Redirect("/Index");
+            return Redirect("/Department");
         }
         [HttpGet] //по ID cnhfybwf c ajhv
         public async Task<ActionResult> Up(string ID)
@@ -54,6 +54,9 @@ namespace WebApplication.Controllers
         {
             Department department = await Models.Department.GetInstanceAsync(ID);
             ViewBag.department = department;
+            var subjects = await Subject.GetCollectionAsync();
+            subjects = subjects.FindAll(x => x.DepartmentID == department.ID);
+            ViewBag.subjects = subjects;
             return View("Look");
         }
     }

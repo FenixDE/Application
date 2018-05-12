@@ -45,10 +45,6 @@ namespace WebApplication.Controllers
         [HttpGet] //по ID cnhfybwf c ajhv
         public async Task<ActionResult> Up(string ID)
         {
-            //Faculty faculty = new Faculty();
-            //subjects = subjects.FindAll(x => x.DepartmentID == department); делегат
-            //faculty.ID = ID;
-            //Faculty.GetInstanceAsync(ID);
             Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
             faculty.ID = ID;
             ViewBag.faculty = faculty; //запись полей
@@ -58,7 +54,10 @@ namespace WebApplication.Controllers
         {
             Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
             ViewBag.faculty = faculty;
+            var groups = await Group.GetCollectionAsync();
+            groups = groups.FindAll(x => x.FacultyId == faculty.ID);
+            ViewBag.groups = groups;
             return View("Look");
-        }
+        }        
     }
 }

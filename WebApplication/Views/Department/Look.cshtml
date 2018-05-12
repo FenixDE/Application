@@ -3,9 +3,7 @@
     ViewBag.Title = "Look";
 }
     <div class="row">
-        <div class="col-md-3">
-
-        </div>
+        
         <div class="col-md-7">
             @if (ViewBag.department != null)
             {
@@ -16,6 +14,52 @@
                     <td><a href="/Department/Up/@ViewBag.department.ID" class="btn btn-primary">Изменить</a></td>
                 </tr>
             }
+        </div>
+        <div class="col-md-3">            
+                @if (ViewBag.subjects != null)
+        {
+            <p><h2>Предметы: </h2></p>
+    foreach (var subject in ViewBag.subjects)
+    {
+        <p>
+            <a href="/Subject/Subject/@subject.ID" class="btn btn-primary">@subject.Name</a>
+            <a href="/Subject/Del/@subject.ID" class="btn btn-primary btn-danger">Удалить</a>
+        </p>
+}
+}
+                <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h3 class="modal-title" id="AddLabel">Добавление предмета</h3>
+                            </div>
+                            <div class="modal-body">
+                                @using (Html.BeginForm("Add", "Subject", FormMethod.Post))
+                        {
+                            <div class="form-group">
+                                <label for="Name">Название</label>
+                                <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Введите название">
+
+                                <label for="Description">Описание</label>
+                                <input type="text" class="form-control" id="Description" name="Description" aria-describedby="Description" placeholder="Введите описание">
+
+                                <input type="hidden" name="DepartmentID" value="@ViewBag.department.ID" />                                
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Добавить</button>
+                            </div>
+                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+                </ul>
         </div>
         <div class="col-md-2">
 
