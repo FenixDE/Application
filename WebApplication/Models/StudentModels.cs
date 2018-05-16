@@ -17,6 +17,22 @@ namespace WebApplication.Models
         public string GroupId { get; set; }
         public string SemesterId { get; set; }
 
+
+        public static async Task<Student> GetInstanceAsync(string id)
+        {
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/Students/{0}", id));
+            var request = new RestRequest(Method.GET);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
+            if (restResponse.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                Student student = result.Data.ToObject<Student>();
+                return student;
+            }
+            else
+                return null;
+        }
                
         public static async Task<List<Student>> GetCollectionAsync(string groupId, string semesterid)
         {

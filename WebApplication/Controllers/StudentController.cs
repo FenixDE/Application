@@ -32,12 +32,6 @@ namespace WebApplication.Controllers
             return View();
         }
 
-        [Route("Test")]
-        public async Task<ActionResult> my()
-        {
-            return View("~/Views/Shared/Error.cshtml");
-        }
-
         [HttpPost]
         public async Task<ActionResult> Add(Student student)
         {
@@ -48,13 +42,13 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
+        [Route("Student/Del/{ID}")]
         public async Task<ActionResult> Del(string ID)
         {
             //TODO: необходимо получить студента по id
-            Student student = new Student();
-            student.ID = ID;
+            Student student = await Student.GetInstanceAsync(ID);
             if (student?.Delete() ?? false)
-                return Redirect("/Student");
+                return Redirect(string.Format("/Student/{0}/{1}", student.GroupId, student.SemesterId));
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
