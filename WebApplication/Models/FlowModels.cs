@@ -65,7 +65,12 @@ namespace WebApplication.Models
             request.AddParameter("undefined", subject, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
-            return false;
+
+            //if (restResponse.StatusCode == HttpStatusCode.OK)
+            if(restResponse.IsSuccessful)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
@@ -97,7 +102,6 @@ namespace WebApplication.Models
         {
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Flows/{0}", ID));
             var request = new RestRequest(Method.DELETE);
-            request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK)

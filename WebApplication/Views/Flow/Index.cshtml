@@ -18,10 +18,11 @@
         {
             foreach (var flow in ViewBag.flows)
             {
-                <tr>
-                    <td><a href="/Flow/Flow/@flow.ID">@flow.Name</a></td>
-                    <td><a href="/Flow/Del/@flow.ID" class="btn btn-primary btn-danger">Удалить</a></td>
-                </tr>
+        <tr>
+            <td>@flow.Name</td>
+            <td><a href="/Flow/Del/@flow.ID" class="btn btn-primary btn-danger">Удалить</a></td>
+            <td><a href="/Flow/Up/@flow.ID" class="btn btn-primary">Изменить</a></td>
+        </tr>
             }
         }
     </table>
@@ -43,26 +44,32 @@
 
                         <label for="AltName">Альтернативное имя</label>
                         <input type="text" class="form-control" id="AltName" name="AltName" aria-describedby="name" placeholder="Введите альт. имя">
-                        @*@foreach (var department in ViewBag.departments)
+                        
+                        @*@foreach (var departmen in ViewBag.departments)
                         {
-                            <select name="menu" size="1">
-                                <option>@department.Name</option>
-                            </select>
-                        }*@
+                            <option value="@departmen.ID">@departmen.Name</option>
+                        }
+                                </select><p></p>  *@
                         <label for="Department">Кафедра</label>
-        <input type="text" class="form-control" id="Department" name="DepartmentId" aria-describedby="department" placeholder="Введите кафедру">
+                        @*<input type="text" class="form-control" id="Department" name="DepartmentId" aria-describedby="department" placeholder="Введите кафедру">*@
+                        <select class="form-control" name="DepartmentId" id="Department">
+                            @foreach (var department in ViewBag.departments)
+                                {
+                                    <option value="@department.ID">@department.Name</option>
+                                }
+                                </select>
+                            </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-primary">Добавить</button>
+                                </div>
+                            }
+                            </div>
                     </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-primary">Добавить</button>
-                        </div>
-                    }
-                    </div>
+                </div>
             </div>
-        </div>
-    </div>    
-    <ul class="nav navbar-nav navbar-right">
-        <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
-    </ul>
-</body>
-</html>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+            </ul>
+        </body>
+        </html>

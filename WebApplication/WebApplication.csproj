@@ -165,6 +165,7 @@
     <Compile Include="Models\DepartmentModels.cs" />
     <Compile Include="Models\FacultyModels.cs" />
     <Compile Include="Models\FlowModels.cs" />
+    <Compile Include="Models\FlowSubjectModels.cs" />
     <Compile Include="Models\GroupModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\PersonModels.cs" />
@@ -215,7 +216,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Student.cshtml" />
-    <Content Include="Views\Home\Teacher.cshtml" />
+    <Content Include="Views\Home\Work.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
@@ -243,6 +244,7 @@
     <Content Include="Views\Person\Index.cshtml" />
     <Content Include="Views\Person\Look.cshtml" />
     <Content Include="Views\Person\Up.cshtml" />
+    <Content Include="Views\Home\Lab.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

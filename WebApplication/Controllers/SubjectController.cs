@@ -18,12 +18,19 @@ namespace WebApplication.Controllers
             ViewBag.subjects = await Models.Subject.GetCollectionAsync();
             return View();
         }
+        [HttpPost]
+        public async Task<ActionResult> AddToFlow(FlowSubject flowSubject)
+        {
+            bool result = await Models.Subject.AddToFlow(flowSubject);
+            return Redirect("/Subject");
+        }
+        
 
         [HttpPost]
         public async Task<ActionResult> Add(Subject subject)
         {
-            await subject.Push();
-            return Redirect("Index");
+            bool result = await subject.Push();
+            return Redirect("/Department");
         }
 
         [HttpGet]
@@ -32,7 +39,7 @@ namespace WebApplication.Controllers
             Subject subject = new Subject();
             subject.ID = ID;
             if (subject?.Delete() ?? false)
-                return Redirect("/Subject");
+                return Redirect("/Department");
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
@@ -55,9 +62,17 @@ namespace WebApplication.Controllers
             if (ID != null)
             {
                 Subject subject = await Models.Subject.GetInstanceAsync(ID);
-                ViewBag.subject = subject;
-                //Department dep = new Department();    
-                //ViewBag.dep = dep.ID;
+                ViewBag.subject = subject;                
+                List<Flow> flows = await Flow.GetCollectionAsync();
+                ViewBag.flows = flows;
+                List<Person> people = await Person.GetCollectionAsync();
+                ViewBag.people = people;
+                List<FlowSubject> sFlows = await subject.GetForFlow();
+                ViewBag.sFlows = sFlows;
+                List<Semester> semesters = await Semester.GetCollectionAsync();
+                ViewBag.semesters = semesters;
+
+                
                 return View("Look");
             }
             else return View("~/Views/Shared/Error.cshtml");

@@ -1,7 +1,32 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Subject";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: ghostwhite;
+        }
 
-<p>Use this area to provide additional information.</p>
+        a {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div><p><h2>Предметы</h2></p></div>
+    <div class="row">
+        <p>@Html.ActionLink("Основы анализа и разработки требований к ПО", "Work", "Home")</p>
+        <p>@Html.ActionLink("Методы и средства защиты информации", "Work", "Home")</p>
+    </div>
+    @*<form>
+        <p><h2>Добавить</h2></p>
+        <p>
+            <label>ФИО</label>
+            <input type="text" />
+        </p>
+        <button>Добавить</button>
+    </form>*@
+</body>
+</html>

@@ -1,6 +1,6 @@
-﻿
+﻿@using WebApplication.Models
 @{
-    ViewBag.Title = "Flow";
+    ViewBag.Title = "Студенты";
 }
 <!DOCTYPE HTML>
 <html>
@@ -10,16 +10,13 @@
 </head>
 <body>   
     <table class="table table-hover">
-        <tr>
-            <th>Студент</th>
-            <th>Действие</th>
-        </tr>
         @if (ViewBag.students != null)
         {
-            foreach (var student in ViewBag.students)
+            foreach (var student in (List<Student>)ViewBag.students)
             {
+                Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
                 <tr>
-                    <td><a href="/Student/Student/@student.ID">@student.Name</a></td>
+                    <td><a href="/Student/Student/@student.ID">@studentInfo.ToString()</a></td>
                     <td><a href="/Student/Del/@student.ID" class="btn btn-primary btn-danger">Удалить</a></td>
                 </tr>
             }
@@ -37,37 +34,27 @@
                 <div class="modal-body">
                     @using (Html.BeginForm("Add", "Student", FormMethod.Post))
                     {
-                    <div class="form-group">
+                        <div class="form-group">
                         <label for="Abbreviation">Студент</label>
-                        <input type="text" class="form-control" id="PersonId" name="PersonId" placeholder="Поток">
+                        @{ 
+                            List<Person> people = Person.GetCollectionAsync().Result;
+                        }
+                        <select id="AddLabel" name="PersonId">
+                            @foreach(var person in people)
+                            {
+                                <option value="@person.ID">@person.ToString()</option>
+                            }
+                        </select>
 
-                        <label for="AltName">Группа</label>
-                        <input type="text" class="form-control" id="GroupId" name="GroupId" aria-describedby="name" placeholder="Введите альт. имя">
-    @if (ViewBag.departments != null)
-    {
-            <select>
-                @foreach (var department in ViewBag.departments)
-                {
-                <option value="@department.ID">@department.Name</option>
-                }
-            </select><p></p>
-            <p><input type="submit" class="btn btn-primary" value="Добавить в семестр"></p>        
-    }
-    @*@foreach (var department in ViewBag.departments)
-                        {
-                            <select name="menu" size="1">
-                                <option>@department.Name</option>
-                            </select>
-                        }*@
-                        <label for="Department">Семестр</label>
-        <input type="text" class="form-control" id="Department" name="SemesterId" aria-describedby="department" placeholder="Введите кафедру">
-                    </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        <input type="hidden" name="GroupId" value="@ViewBag.group.ID" />
+                        <input type="hidden" name="SemesterId" value="@ViewBag.semesterId" />       
                         </div>
-                    }
-                    </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Добавить</button>
+                            </div>
+                     }
+                </div>
             </div>
         </div>
     </div>    

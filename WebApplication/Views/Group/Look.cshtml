@@ -3,11 +3,11 @@
     ViewBag.Title = "Look";
 }
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-5">
         @if (ViewBag.group != null)
         {
         <p><h1>@ViewBag.group.Name</h1></p>
-        @*<p><h2>Куратор: @ViewBag.faculty.Name</h2></p>*@
+        @*<p><h2>Факультет: @ViewBag.group.FacyltyId</h2></p>*@
         @*<p><h2>Куратор: @ViewBag.group.CuratorId</h2></p>*@
         <p><h2>Описание: @ViewBag.group.Description</h2></p>
         <tr>
@@ -16,86 +16,47 @@
 
 }
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
+
+        @* Список семестров, для которых существует данная группа *@
         <p><h2>Семестры: </h2></p>
-        @if (ViewBag.group.Semesters != null)
-        {
-            foreach (var semester in ViewBag.group.Semesters)
+        <table class="table table-hover">
+            <tbody>
+                @foreach (var semester in ViewBag.group.Semesters)
+                {
+                    <tr>
+                        <td>@semester.Name</td>
+                        <td><a href="@string.Format("/Student/{0}/{1}", ViewBag.group.ID, semester.ID)" class="btn btn-link">Студенты</a></td>
+                        <td>
+                            @using (Html.BeginForm("DeleteToSemester", "Group", FormMethod.Post))
+                            {
+                                <input type="hidden" value="@ViewBag.group.ID" name="id" />
+                                <input type="hidden" value="@semester.ID" name="semesterid" />
+                                <input type="submit" class="btn btn-danger" value="Удалить" />
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <p><h3>Добавить группу на семестр:</h3></p>
+        <p>
+            @using (Html.BeginForm("AddToSemester", "Group", FormMethod.Post))
             {
-                <p><a href="/Semester/Semester/@semester.ID">@semester.Name</a></p>
-            }
-            using (Html.BeginForm("DeleteToSemester", "Group", FormMethod.Post))
-            {
-            <input type="hidden" name="id" value="@ViewBag.group.ID" />
+                <input type="hidden" name="id" value="@ViewBag.group.ID" />
                 if (ViewBag.semesters != null)
                 {
                     <select name="semesterid">
-        @foreach (var semestr in ViewBag.semesters)
-        {
-            <option value="@semestr.ID">@semestr.Name</option>
-        }
-                    </select><p></p>
-                    <p><input type="submit" class="btn btn-primary btn-danger" value="Удалить"></p>
-                }
-            }
-        }
-        <p></p>
-        <p><h3>Выберите семестр:</h3></p>
-        @using (Html.BeginForm("AddToSemester", "Group", FormMethod.Post))
-        {
-            <input type="hidden" name="id" value="@ViewBag.group.ID" />
-            if (ViewBag.semesters != null)
-            {
-            <select name="semesterid">
-                @foreach (var semestr in ViewBag.semesters)
-                {
-                <option value="@semestr.ID">@semestr.Name</option>
-                }
-            </select><p></p>
-            <p><input type="submit" class="btn btn-primary" value="Добавить в семестр"></p>
-            }
-        }
-        </div>
-        @*@{
-            string addtosem = String.Format("/Group/AddToSemester/{0}/{1}", ViewBag.group.ID, ViewBag.semester.ID);
-        }
-        <a href="@addtosem" class="btn btn-primary">Добавить в семестр</a>*@
-        @*<div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h3 class="modal-title" id="AddLabel">Добавление семестра</h3>
-                    </div>
-                    <div class="modal-body">
-                        @using (Html.BeginForm("Add", "Semester", FormMethod.Post))
+                    <option>Выбрать семемтр</option>
+                    @foreach (var semestr in ViewBag.semesters)
                     {
-                        <div class="form-group">
-                            <label for="Abbreviation">Название</label>
-                            <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Название">
-
-                            <label for="StartDate">StartDate</label>
-                            <input type="date" class="form-control" id="StartDate" name="StartDate" aria-describedby="StartDate" placeholder="Введите описание">
-                            <label for="EndDate">EndDate</label>
-                            <input type="date" class="form-control" id="EndDate" name="EndDate" aria-describedby="EndDate" placeholder="Введите описание">
-                            <label for="SessionStart">SessionStart</label>
-                            <input type="date" class="form-control" id="SessionStart" name="SessionStart" aria-describedby="SessionStart" placeholder="Введите описание">
-                            <label for="SessionEnd">SessionEnd</label>
-                            <input type="date" class="form-control" id="SessionEnd" name="SessionEnd" aria-describedby="SessionEnd" placeholder="Введите описание">
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-primary">Добавить</button>
-                        </div>
+                        <option value="@semestr.ID">@semestr.Name</option>
+                    }
+                    </select>
+                    <p><input type="submit" class="btn btn-primary" value="Добавить в семестр"></p>
                 }
-                    </div>
-                </div>
-            </div>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
-        </ul>*@
-    </div>    
+            }
+        </p>
+    </div>
 </div>

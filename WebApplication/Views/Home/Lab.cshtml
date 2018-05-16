@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Lab";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: ghostwhite;
+        }
+
+        a {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div><p><h2>Лабораторные работы:</h2></p></div>
+    <div class="row, col-md-6">
+        <form>
+            <table>
+                <tr>
+                    <td><label>Лабораторная 1</label></td>
+                    <td><input type="checkbox" class="form-check-input" />  </td>
+                    <td><input type="number" class="col-sm-3" /> <label>   баллы</label></td>
+                </tr>
+                <tr>
+                    <td><label>Лабораторная 2</label></td>
+                    <td><input type="checkbox" class="form-check-input" />  </td>
+                    <td><input type="number" class="col-sm-3" /> <label>   баллы</label></td>
+                </tr>
+            </table>
+            @Html.ActionLink("Cохранить", "Index", "Semester")
+        </form>
+    </div>
+    <div class="row, col-md-4">
+        @*<form>
+            <table>
+                <tr>
+                    <td><label>Добавить</label></td>
+                    <td><input type="text" /></td>
+                </tr>
+            </table>
+            <button>Добавить</button>
+        </form>*@
+    </div>
+</body>
+</html>

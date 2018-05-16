@@ -3,9 +3,7 @@
     ViewBag.Title = "Look";
 }
     <div class="row">
-        <div class="col-md-3">
-
-        </div>
+        
         <div class="col-md-7">
             @if (ViewBag.semester != null)
     {
@@ -17,7 +15,18 @@
         <p><a href="/Semester/Up/@ViewBag.semester.ID" class="btn btn-primary">Изменить</a></p>
 }
         </div>
-        <div class="col-md-2">
-            <button>Предметы</button>
+        @*  *@
+        <div class="col-md-3">
+            <div><p><h2>Студенты</h2></p></div>
+            <div class="row">
+                <p>@Html.ActionLink("Студент 1", "About", "Home")</p>
+                <p>@Html.ActionLink("Студент 2", "About", "Home")</p>
+            </div>            
         </div>
+        @*<form>            
+            <p><h2>Добавить</h2></p>
+            <p><label>ФИО</label>
+            <input type="text" /></p> 
+            <button>Добавить</button>
+        </form>*@
     </div>

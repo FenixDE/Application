@@ -18,15 +18,17 @@ namespace WebApplication.Models
         public string SemesterId { get; set; }
 
                
-        public static async Task<List<Student>> GetCollectionAsync(string id, string semesterid)
+        public static async Task<List<Student>> GetCollectionAsync(string groupId, string semesterid)
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Students/group/{0}/{0}", id, semesterid));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Students/group/{0}/{1}", semesterid, groupId));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            List<Student> students = result.Data.ToObject<List<Student>>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<Student> students = result.Data.ToObject<List<Student>>();
                 return students;
+            }
             else
                 return new List<Student>();
         }
@@ -43,7 +45,7 @@ namespace WebApplication.Models
             request.AddParameter("undefined", subject, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
-            return false;
+            return restResponse.IsSuccessful;
         }
                 
 

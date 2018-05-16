@@ -18,75 +18,89 @@ namespace WebApplication.Controllers
             ViewBag.groups = await Models.Group.GetCollectionAsync();
             return View();
         }
+
         [HttpPost]
         public async Task<ActionResult> Add(Group group)
         {
             bool result = await group.Push();
-            return Redirect("/Faculty");
+            if(result)
+                return Redirect("/Faculty");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
+
         [HttpPost]
         public async Task<ActionResult> AddToSemester(string id, string semesterid)
         {
             Group group = await Models.Group.GetInstanceAsync(id);
-            group.ID = id;
-            ViewBag.group = group;
+            if(group == null)
+                return View("~/Views/Shared/Error.cshtml");
+
             Semester semester = await Semester.GetInstanceAsync(semesterid);
-            semester.ID = semesterid;
-            ViewBag.semester = semester;
+            if(semester == null)
+                return View("~/Views/Shared/Error.cshtml");
+
             bool result = await group.AddToSemester(id, semesterid);
             return Redirect(String.Format("/Group/Group/{0}",id));
         }
+
+        [HttpPost]
         public async Task<ActionResult> DeleteToSemester(string id, string semesterid)
         {
             Group group = await Models.Group.GetInstanceAsync(id);
-            group.ID = id;
-            ViewBag.group = group;
+            if(group == null)
+                return View("~/Views/Shared/Error.cshtml");
+
             Semester semester = await Semester.GetInstanceAsync(semesterid);
-            semester.ID = semesterid;
-            ViewBag.semester = semester;
-            group.DeleteToSemester(id, semesterid);
-            return Redirect(String.Format("/Group/Group/{0}", id));
+            if(semester == null)
+                return View("~/Views/Shared/Error.cshtml");
+
+            if(group.DeleteToSemester(id, semesterid))
+                return Redirect(String.Format("/Group/Group/{0}", id));
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
         public async Task<ActionResult> Del(string ID)
         {
-            Group group = new Group();
+            Group group = await Models.Group.GetInstanceAsync(ID);
             group.ID = ID;
-            if (group?.Delete() ?? false)
+            if (group.Delete())
+                return Redirect(string.Format("/Faculty/Look/{0}", group.FacultyId));
+            else
+                return View("~/Views/Shared/Error.cshtml");
+        }
+
+        [HttpPost] //
+        public async Task<ActionResult> Up(Group group)
+        {
+            if(await group.Update())
                 return Redirect("/Faculty");
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
-        [HttpPost] //
-        public async Task<ActionResult> Up(Group group)
-        {
-            await group.Update();
-            return Redirect("/Faculty");
-        }
+
         [HttpGet] //по ID cnhfybwf c ajhv
         public async Task<ActionResult> Up(string ID)
         {
             Group group = await Models.Group.GetInstanceAsync(ID);
-            if (ID != null)
-            {
-                group.ID = ID;
-                ViewBag.group = group; //запись полей
-                return View();
-            }
-            else return View("~/Views/Shared/Error.cshtml");
+            if (group == null)
+                return View("~/Views/Shared/Error.cshtml");
+
+            ViewBag.group = group; //запись полей
+            return View();
         }
-        public async Task<ActionResult> Group(string ID, string gId)
+
+        public async Task<ActionResult> Group(string ID)
         {
             if (ID != null)
             {
                 Group group = await Models.Group.GetInstanceAsync(ID);
                 ViewBag.group = group;
                 List<Semester> semesters = await Semester.GetCollectionAsync();
+                semesters = semesters.Except(group.Semesters).ToList();
                 ViewBag.semesters = semesters;
-                //var students = await Student.GetCollectionAsync(ID, gId);
-                //students = students.FindAll(x => x.GroupId == group.ID);
-                //ViewBag.students = students;
                 return View("Look");
             }
             else return View("~/Views/Shared/Error.cshtml");

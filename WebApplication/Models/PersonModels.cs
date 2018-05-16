@@ -22,6 +22,11 @@ namespace WebApplication.Models
         public string Info { get; set; }
         public string RoleId { get; set; }
 
+        public override string ToString()
+        {
+            return String.Format("{0} {1} {2}", Surname, Name, Patronymic);
+        }
+
         public static async Task<Person> GetInstanceAsync(string id)
         {
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/People/{0}", id));

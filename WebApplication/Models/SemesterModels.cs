@@ -18,7 +18,6 @@ namespace WebApplication.Models
         public DateTime? EndDate { get; set; }        
         public DateTime? SessionStart { get; set; }
         public DateTime? SessionEnd { get; set; }
-        //public string Semesters { get; set; }
 
 
         /// <summary>

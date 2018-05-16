@@ -20,7 +20,7 @@ namespace WebApplication.Controllers
             return View();
         }
 
-        public ActionResult Semester()
+        public ActionResult Lab()
         {
             ViewBag.Message = "Your contact page.";
 
@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
 
             return View();
         }
-        public ActionResult Teacher()
+        public ActionResult Work()
         {
             ViewBag.Message = "Your contact page.";
 

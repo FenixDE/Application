@@ -44,7 +44,39 @@ namespace WebApplication.Models
                 return new List<Subject>();
         }
 
-        
+        public async Task<List<FlowSubject>> GetForFlow()
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Subjects/flow?subject={0}", ID));
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<FlowSubject> subjects = result.Data.ToObject<List<FlowSubject>>();
+                return subjects;
+            }
+            else
+                return new List<FlowSubject>();
+        }
+
+        public static async Task<bool> AddToFlow(FlowSubject flowSubject)
+        {
+            string fSubjString = JsonConvert.SerializeObject(flowSubject);
+            var client = new RestClient("http://eljournal.ddns.net/api/Subjects/flow");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            request.AddParameter("undefined", fSubjString, ParameterType.RequestBody);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = client.Execute(request);
+            //IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод           
+            if (restResponse.StatusCode == HttpStatusCode.OK || restResponse.StatusCode == HttpStatusCode.Created)
+                return true;
+            else
+                return false;
+        }
+
         public async Task<bool> Push()
         {
             string subject = JsonConvert.SerializeObject(this);
@@ -56,8 +88,10 @@ namespace WebApplication.Models
             request.AddParameter("undefined", subject, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-                                                                                                                //IRestResponse response = client.Execute(request);
-            return false;
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
 
         

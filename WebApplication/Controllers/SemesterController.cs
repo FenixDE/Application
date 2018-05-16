@@ -54,9 +54,9 @@ namespace WebApplication.Controllers
         {
             Semester semester = await Models.Semester.GetInstanceAsync(ID);
             ViewBag.semester = semester;
-            var students = await Student.GetCollectionAsync(ID, gId);
-            students = students.FindAll(x => x.SemesterId == semester.ID);
-            ViewBag.students = students;
+            //var students = await Student.GetCollectionAsync(ID, gId);
+            //students = students.FindAll(x => x.SemesterId == semester.ID);
+            //ViewBag.students = students;
             return View("Look");
         }        
     }

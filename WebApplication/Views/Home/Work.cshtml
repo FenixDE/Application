@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Work";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: ghostwhite;
+        }
+
+        a {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div><p>Выбор работ</p></div>
+    <div class="row">
+        <ul class="nav navbar-nav">
+            <li>@Html.ActionLink("Лабораторные работы", "Lab", "Home")</li>
+        </ul>
+    </div>
+</body>
+</html>

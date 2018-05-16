@@ -73,7 +73,7 @@ namespace WebApplication.Models
         /// <returns></returns>
         public async Task<bool> AddToSemester(string id, string semesterid)
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}/{0}", id, semesterid));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}/{1}", id, semesterid));
             var request = new RestRequest(Method.POST);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
@@ -93,7 +93,7 @@ namespace WebApplication.Models
         /// <returns></returns>
         public bool DeleteToSemester(string id, string semesterid)
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}/{0}", id, semesterid));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Groups/{0}/{1}", id, semesterid));
             var request = new RestRequest(Method.DELETE);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
