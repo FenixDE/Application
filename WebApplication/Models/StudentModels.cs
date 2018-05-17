@@ -50,6 +50,36 @@ namespace WebApplication.Models
         }
 
 
+        public class StudentFlowSubject
+        {
+            public string ID { get; set; }
+            public string StudentId { get; set; }
+            public string FlowSubjectId { get; set; }
+
+            public async Task<List<StudentFlowSubject>> GetCollectionAsync(string semesterId, 
+                string studentId = null, string flowSubjectId = null)
+            {
+                var client = new RestClient(string.Format("http://eljournal.ddns.net/api/Students/flow/{0}", semesterId));
+                var request = new RestRequest(Method.GET);
+                request.AddHeader("Postman-Token", "b27d2b8f-718a-4d65-9f24-c1472244004d");
+                request.AddHeader("Cache-Control", "no-cache");
+                request.AddQueryParameter("student", studentId);
+                request.AddQueryParameter("flowSubject", flowSubjectId);
+                var cancellationTokenSource = new CancellationTokenSource();
+                IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+                if (restResponse.IsSuccessful)
+                {
+                    Response result = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                    List<StudentFlowSubject> students = result.Data.ToObject<List<StudentFlowSubject>>();
+                    return students;
+                }
+                else
+                    return new List<StudentFlowSubject>();
+            }
+        }
+
+
+
         public async Task<bool> Push()
         {
             string subject = JsonConvert.SerializeObject(this);

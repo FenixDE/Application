@@ -52,5 +52,12 @@ namespace WebApplication.Controllers
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
+
+        [HttpGet]
+        [Route("Student/{studentId}/registry")]
+        public async Task<ActionResult> GetStudentSubject(string studentId)
+        {
+
+        }
     }
 }
