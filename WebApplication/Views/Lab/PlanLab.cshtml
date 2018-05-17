@@ -10,69 +10,52 @@
     <title>Факультеты</title>
 </head>
 <body>
-    <table class="table table-hover">
-        <tr>
-            <th>План лабораторных работ</th>
-        </tr>
-        <div class="col-md-7">
-            @if (ViewBag.subflow != null)
-        {
-            foreach (var subf in (List<FlowSubject>)ViewBag.subflow)
+    <div class="row">
+        @{ FlowSubject subflow = ViewBag.subflow; }
+        <div class="col-md-4">
+            @{ Subject subject = Subject.GetInstanceAsync(subflow.SubjectId).Result; }
+            <p><h3>План лабораторных работ</h3></p>
+            <p>Предмет: @subject.Name</p>
+        </div>
+        <div class="col-md-4">
+            @{ Flow flow = Flow.GetInstanceAsync(subflow.FlowId).Result; }
+            <p><h3>@flow.Name</h3></p>
+            <p>@flow.AltName</p>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Название работы</th>
+                    <th>% выполнивших</th>
+                </tr>
+            </thead>
+            @foreach (var work in (List<LabPlan>)ViewBag.workplan)
             {
-                FlowSubject sf = FlowSubject.GetInstanceAsync(subf.ID).Result;
-                
-            }           
-    }
-        </div>
-        <div class="col-md-3">
-            @if (ViewBag.groups != null)
-        {
-            <p><h2>Группы: </h2></p>
-        foreach (var group in ViewBag.groups)
-        {
-            <p>
-                <a href="/Group/Group/@group.ID" class="btn btn-primary">@group.Name</a>
-                <a href="/Group/Del/@group.ID" class="btn btn-primary btn-danger">Удалить</a>
-            </p>
-    }
-}
-            <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
-                <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h3 class="modal-title" id="AddLabel">Добавление группы</h3>
-                        </div>
-                        <div class="modal-body">
-                            @using (Html.BeginForm("Add", "Group", FormMethod.Post))
-                        {
-                            <div class="form-group">
-                                <label for="Name">Название</label>
-                                <input type="text" class="form-control" id="Name" name="Name" placeholder="Введите название">
+                <tr>
+                    <td><a href="#">@work.Work.Name</a></td>@*здесь переход к странице лаб работы*@
+                    <td><a href="#">0%</a></td> @*здесь переход к студентам, выполнившим лаб. работу*@
+                </tr>
+            }
 
-                                <label for="Description">Описание</label>
-                                <input type="text" class="form-control" id="Description" name="Description" aria-describedby="Description" placeholder="Введите описание">
-
-                                <input type="hidden" name="FacultyId" value="@ViewBag.faculty.ID" />
-                                <label for="CuratorId">Curator</label>
-                                <input type="text" class="form-control" id="CuratorId" name="CuratorId" aria-describedby="CuratorId" placeholder="">
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                                <button type="submit" class="btn btn-primary">Добавить</button>
-                            </div>
-                    }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
-            </ul>
-        </div>
-    </table>
+        </table>
+     </div>
+    @*<div class="row">
+        @Html.BeginForm()
+        @using (Html.BeginForm("AddLabPlan", "Lab", FormMethod.Post))
+        {
+            <label for="work">Лабораторная работа</label>
+            <select class="form-control" id="work" name="WorkId">
+                @foreach (var work in ViewBag.works)
+                {
+                    <option value="@work.ID">@work.Name</option>
+                }
+            </select>
+            <input type="hidden" name="FlowSubjectId" value="@subflow.ID" />
+            <input type="submit" class="btn btn-success" value="Добавить в план" />
+        }
+    </div>*@
     <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
@@ -80,27 +63,51 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title" id="AddLabel">Добавление лаораторной работы</h3>
+                    <h3 class="modal-title" id="AddLabel">Добавление группы</h3>
                 </div>
                 <div class="modal-body">
-                    @using (Html.BeginForm("Add", "Lab", FormMethod.Post))
-                    {
+                    <form action="/Lab/plan" method="post">
                         <div class="form-group">
-                            <label for="Abbreviation">Аббревиатура</label>
-                            <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Аббревиатура">
+                            <label for="work">Лабораторная работа</label>
+                            <select class="form-control" id="work" name="WorkId">
+                                @foreach (var work in ViewBag.works)
+                                {
+                                    <option value="@work.ID">@work.Name</option>
+                                }
+                            </select>
 
-                            <label for="FullName">Описание</label>
-                            <input type="text" class="form-control" id="FullName" name="Info" aria-describedby="name" placeholder="Введите описание">
+                            <input type="hidden" name="FlowSubjectId" value="@subflow.ID" />
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                             <button type="submit" class="btn btn-primary">Добавить</button>
                         </div>
-                    }
+                    </form>
+                    @*@using (Html.BeginForm("AddLabPlan", "Lab", FormMethod.Post))
+                    {
+                        <div class="form-group">
+                            <label for="work">Лабораторная работа</label>
+                            <select class="form-control" id="work" name="WorkId">
+                                @foreach(var work in ViewBag.works)
+                                {
+                                    <option value="@work.ID">@work.Name</option>
+                                }
+                            </select>
+                            
+                            <input type="hidden" name="FlowSubjectId" value="@subflow.ID" />
+                        </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Добавить</button>
+                            </div>
+                    }*@
                 </div>
             </div>
         </div>
     </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+    </ul>
 </body>
 </html>
 

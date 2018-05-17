@@ -169,7 +169,7 @@
     <Compile Include="Models\FlowSubjectModels.cs" />
     <Compile Include="Models\GroupModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\LabModels.cs" />
+	<Compile Include="Models\LabModels.cs" />
     <Compile Include="Models\PersonModels.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\SemesterModels.cs" />

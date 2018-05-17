@@ -109,4 +109,43 @@ namespace WebApplication.Models
                 return false;
         }
     }
+
+    public class LabPlan
+    {
+        public string ID { get; set; }
+        public virtual Lab Work { get; set; }
+        public string FlowSubjectId { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string WorkID { get; set; }
+
+        public static async Task<List<LabPlan>> GetCollectionAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new List<LabPlan>();
+
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", id));
+            var request = new RestRequest(Method.GET);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+            if (restResponse.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                List<LabPlan> planWorks = result.Data.ToObject<List<LabPlan>>();
+                return planWorks;
+            }
+            else
+                return new List<LabPlan>();
+        }
+
+        public async Task<bool> Push()
+        {
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}/{1}", 
+                FlowSubjectId, WorkID));
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+            return restResponse.IsSuccessful;
+        }
+    }
 }

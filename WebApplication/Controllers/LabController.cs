@@ -42,6 +42,7 @@ namespace WebApplication.Controllers
             await lab.Update();
             return Redirect("/Lab");
         }
+
         [HttpGet] //по ID cnhfybwf c ajhv
         public async Task<ActionResult> Up(string ID)
         {
@@ -49,13 +50,30 @@ namespace WebApplication.Controllers
             ViewBag.lab = lab; //запись полей
             return View();
         }
-        public async Task<ActionResult> Lab(string fsid)
+
+        [Route("Lab/plan/{fsid}")]
+        public async Task<ActionResult> LabPlan(string fsid)
         {
-            Lab lab = await Models.Lab.GetCollectionAsync();
-            ViewBag.lab = lab;
             var subflow = await FlowSubject.GetInstanceAsync(fsid);
             ViewBag.subflow = subflow;
-            return View("Look");
+            var workplan = await Models.LabPlan.GetCollectionAsync(fsid);
+            ViewBag.workplan = workplan;
+            var works = await Lab.GetCollectionAsync();
+            ViewBag.works = works;
+            return View("PlanLab");
+        }
+
+        [HttpPost]
+        [Route("Lab/plan")]
+        public async Task<ActionResult> AddLabPlan(LabPlan plan)
+        {
+            if(plan == null)
+                return View("~/Views/Shared/Error.cshtml");
+
+            if (await plan.Push())
+                return Redirect(string.Format("/Lab/plan/{0}", plan.FlowSubjectId));
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
     }
 }
