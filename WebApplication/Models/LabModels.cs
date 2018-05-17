@@ -28,9 +28,14 @@ namespace WebApplication.Models
             var request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Lab labs = result.Data.ToObject<Lab>();
-            return labs;
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                Lab labs = result.Data.ToObject<Lab>();
+                return labs;
+            }
+            else
+                return null;
         }
 
         /// <summary>
@@ -68,7 +73,10 @@ namespace WebApplication.Models
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
             //IRestResponse response = client.Execute(request);
-            return false;
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
@@ -86,10 +94,10 @@ namespace WebApplication.Models
             request.AddParameter("undefined", lab, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-            //if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
-            //else
-            //    return false;
+            else
+                return false;
         }
 
         /// <summary>
@@ -103,7 +111,7 @@ namespace WebApplication.Models
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;

@@ -30,9 +30,14 @@ namespace WebApplication.Models
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Semester/{0}", id));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Semester semesters = result.Data.ToObject<Semester>();
-            return semesters;
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                Semester semesters = result.Data.ToObject<Semester>();
+                return semesters;
+            }
+            else
+                return null;
         }
         public static async Task<dynamic> GetCollectionAsync()
         {
@@ -58,7 +63,10 @@ namespace WebApplication.Models
             request.AddParameter("undefined", semester, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод //IRestResponse response = client.Execute(request);            
-            return false;
+            if (restResponse.IsSuccessful)
+                return true;
+            else
+                return false;
         }
         public async Task<bool> Update()
         {
@@ -71,7 +79,10 @@ namespace WebApplication.Models
             request.AddParameter("undefined", semester, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-            return false;
+            if (restResponse.IsSuccessful)
+                return true;
+            else
+                return false;
         }
         public bool Delete()
         {
@@ -80,7 +91,7 @@ namespace WebApplication.Models
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;

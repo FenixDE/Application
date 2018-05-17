@@ -29,7 +29,10 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             Flow flows = result.Data.ToObject<Flow>();
-            return flows;
+            if (response.StatusCode == HttpStatusCode.OK)
+                return flows;
+            else
+                return null;
         }
 
         /// <summary>

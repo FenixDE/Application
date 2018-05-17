@@ -29,7 +29,10 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             Department departments = result.Data.ToObject<Department>();
-            return departments;
+            if (response.StatusCode == HttpStatusCode.OK)
+                return departments;
+            else
+                return null;
         }
 
         /// <summary>
@@ -66,7 +69,10 @@ namespace WebApplication.Models
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
                                                                                                                 //IRestResponse response = client.Execute(request);
-            return false;
+            if (restResponse.StatusCode == HttpStatusCode.OK)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>

@@ -23,7 +23,10 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Add(Semester semester)
         {
             bool result = await semester.Push();
-            return Redirect("Index");
+            if (result)
+                return Redirect("Index");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -39,25 +42,33 @@ namespace WebApplication.Controllers
         [HttpPost] //
         public async Task<ActionResult> Up(Semester semester)
         {
-            await semester.Update();
-            return Redirect("/Index");
+            if (await semester.Update())
+                return Redirect("/Index");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
         [HttpGet] 
         public async Task<ActionResult> Up(string ID)
         {
             Semester semester = await Models.Semester.GetInstanceAsync(ID);
+            if (semester == null)
+                return View("~/Views/Shared/Error.cshtml");
             semester.ID = ID;
             ViewBag.semester = semester; //запись полей
             return View();
         }
         public async Task<ActionResult> Semester(string ID, string gId)
         {
-            Semester semester = await Models.Semester.GetInstanceAsync(ID);
-            ViewBag.semester = semester;
-            //var students = await Student.GetCollectionAsync(ID, gId);
-            //students = students.FindAll(x => x.SemesterId == semester.ID);
-            //ViewBag.students = students;
-            return View("Look");
-        }        
+            if (ID != null)
+            {
+                Semester semester = await Models.Semester.GetInstanceAsync(ID);
+                ViewBag.semester = semester;
+                //var students = await Student.GetCollectionAsync(ID, gId);
+                //students = students.FindAll(x => x.SemesterId == semester.ID);
+                //ViewBag.students = students;
+                return View("Look");
+            }
+            else return View("~/Views/Shared/Error.cshtml");
+    }        
     }
 }

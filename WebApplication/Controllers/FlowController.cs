@@ -60,7 +60,6 @@ namespace WebApplication.Controllers
             Flow flow = await Models.Flow.GetInstanceAsync(ID);
             if(flow == null)
                 return View("~/Views/Shared/Error.cshtml");
-
             ViewBag.flow = flow; //запись полей
             return View("Up");
         }

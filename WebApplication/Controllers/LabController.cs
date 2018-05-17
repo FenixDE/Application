@@ -22,8 +22,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(Lab lab)
         {
-            await lab.Push();
-            return Redirect("Index");
+            bool result = await lab.Push();
+            if (result)
+                return Redirect("/Index");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -39,15 +42,18 @@ namespace WebApplication.Controllers
         [HttpPost] //
         public async Task<ActionResult> Up(Lab lab)
         {
-            await lab.Update();
-            return Redirect("/Lab");
+            if (await lab.Update())
+                return Redirect("/Lab");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
-        [HttpGet] //по ID cnhfybwf c ajhv
+        [HttpGet] 
         public async Task<ActionResult> Up(string ID)
         {
             Lab lab = await Models.Lab.GetInstanceAsync(ID);
-            ViewBag.lab = lab; //запись полей
+            if (lab == null)
+                ViewBag.lab = lab; //запись полей
             return View();
         }
 

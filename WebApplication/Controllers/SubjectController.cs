@@ -22,7 +22,10 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> AddToFlow(FlowSubject flowSubject)
         {
             bool result = await Models.Subject.AddToFlow(flowSubject);
-            return Redirect("/Subject");
+            if (result)
+                return Redirect("/Subject");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
 
@@ -30,7 +33,10 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Add(Subject subject)
         {
             bool result = await subject.Push();
-            return Redirect("/Department");
+            if (result)
+                return Redirect("/Department");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -46,13 +52,17 @@ namespace WebApplication.Controllers
         [HttpPost] //
         public async Task<ActionResult> Up(Subject subject)
         {
-            await subject.Update();
-            return Redirect("/Subject");
+            if (await subject.Update())
+                return Redirect("/Subject");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
         [HttpGet]
         public async Task<ActionResult> Up(string ID)
         {
             Subject subject = await Models.Subject.GetInstanceAsync(ID);
+            if (subject == null)
+                return View("~/Views/Shared/Error.cshtml");
             subject.ID = ID;
             ViewBag.subject = subject; //запись полей
             return View("Up");
@@ -79,10 +89,14 @@ namespace WebApplication.Controllers
         
         public async Task<ActionResult> FlowSubjectM(string id)
         {
-            FlowSubject subject = await FlowSubject.GetInstanceAsync(id);
-            ViewBag.subject = subject;
+            if (id != null)
+            {
+                FlowSubject subject = await FlowSubject.GetInstanceAsync(id);
+                ViewBag.subject = subject;
 
-            return View("FlowSubject");
+                return View("FlowSubject");
+            }
+            else return View("~/Views/Shared/Error.cshtml");
         }
     }
 }

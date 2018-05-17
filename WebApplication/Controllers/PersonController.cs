@@ -21,8 +21,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(Person person)
         {
-            await person.Push();
-            return Redirect("Index");
+            bool result = await person.Push();
+            if (result)
+                return Redirect("Index");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -38,13 +41,17 @@ namespace WebApplication.Controllers
         [HttpPost] //
         public async Task<ActionResult> Up(Person person)
         {
-            await person.Update();
-            return Redirect("/Person");
+            if (await person.Update())
+                return Redirect("/Person");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
         [HttpGet]
         public async Task<ActionResult> Up(string ID)
         {
             Person person = await Models.Person.GetInstanceAsync(ID);
+            if (person == null)
+                return View("~/Views/Shared/Error.cshtml");
             person.ID = ID;
             ViewBag.person = person; //запись полей
             return View("Up");

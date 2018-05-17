@@ -22,8 +22,11 @@ namespace WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(Faculty faculty)
         {
-            await faculty.Push();
-            return Redirect("Index");
+            bool result = await faculty.Push();
+            if (result)
+                return Redirect("/Faculty");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpGet]
@@ -38,25 +41,33 @@ namespace WebApplication.Controllers
         }
         [HttpPost] //
         public async Task<ActionResult> Up(Faculty faculty)
-        { 
-            await faculty.Update();
-            return Redirect("/Faculty");
+        {
+            if (await faculty.Update())
+                return Redirect("/Faculty");
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
         [HttpGet] //по ID cnhfybwf c ajhv
         public async Task<ActionResult> Up(string ID)
         {
             Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
+            if (faculty == null)
+                return View("~/Views/Shared/Error.cshtml");
             ViewBag.faculty = faculty; //запись полей
             return View();
         }
         public async Task<ActionResult> Faculty(string ID)
         {
-            Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
-            ViewBag.faculty = faculty;
-            var groups = await Group.GetCollectionAsync();
-            groups = groups.FindAll(x => x.FacultyId == faculty.ID);
-            ViewBag.groups = groups;
-            return View("Look");
+            if (ID != null)
+            {
+                Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
+                ViewBag.faculty = faculty;
+                var groups = await Group.GetCollectionAsync();
+                groups = groups.FindAll(x => x.FacultyId == faculty.ID);
+                ViewBag.groups = groups;
+                return View("Look");
+            }
+            else return View("~/Views/Shared/Error.cshtml");
         }        
     }
 }
