@@ -57,6 +57,7 @@ namespace WebApplication.Controllers
             ViewBag.subject = subject; //запись полей
             return View("Up");
         }
+
         public async Task<ActionResult> Subject(string ID)
         {
             if (ID != null)
@@ -76,18 +77,10 @@ namespace WebApplication.Controllers
             else return View("~/Views/Shared/Error.cshtml");
         }
         
-        public async Task<ActionResult> FlowSubjectM(string ID)
+        public async Task<ActionResult> FlowSubjectM(string id)
         {
-            Subject subject = await Models.Subject.GetInstanceAsync(ID);
+            FlowSubject subject = await FlowSubject.GetInstanceAsync(id);
             ViewBag.subject = subject;
-            List<Flow> flows = await Flow.GetCollectionAsync();
-            ViewBag.flows = flows;
-            List<Person> people = await Person.GetCollectionAsync();
-            ViewBag.people = people;
-            List<FlowSubject> sFlows = await subject.GetForFlow();
-            ViewBag.sFlows = sFlows;
-            List<Semester> semesters = await Semester.GetCollectionAsync();
-            ViewBag.semesters = semesters;
 
             return View("FlowSubject");
         }

@@ -29,11 +29,14 @@ namespace WebApplication.Models
 
         public static async Task<Person> GetInstanceAsync(string id)
         {
+            if(string.IsNullOrEmpty(id))
+                return null;
+
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/People/{0}", id));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Person people = result.Data.ToObject<Person>();
+            Person people = result.Data.ToObject<Person>();//TODO: здесь необработанная ошибка
             return people;
         }
 

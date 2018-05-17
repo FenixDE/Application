@@ -69,8 +69,7 @@ namespace WebApplication.Models
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             request.AddParameter("undefined", fSubjString, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
-            IRestResponse restResponse = client.Execute(request);
-            //IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод           
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод           
             if (restResponse.StatusCode == HttpStatusCode.OK || restResponse.StatusCode == HttpStatusCode.Created)
                 return true;
             else

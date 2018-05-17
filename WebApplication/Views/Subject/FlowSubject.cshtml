@@ -3,44 +3,64 @@
     ViewBag.Title = "FlowSubject";
 }
 <div class="row">
-    <div class="col-md-4">
-        <table>
-            <thead>
-                <tr>
-                    <td><h4>Преподаватель: </h4></td>
-                    <td><h4>Поток: </h4></td>
-                    <td><h4>Семестр: </h4></td>
-                    <td><h4>Предмет: </h4></td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var flow in ((List<FlowSubject>)ViewBag.sFlows))
-                    { 
-                        <tr>
-                            @{string flowName = (Flow.GetInstanceAsync(flow.FlowId).Result).Name;}
-                            <td>@flowName</td>
-                            @{ string teachName = (Person.GetInstanceAsync(flow.TeacherId).Result).Name;}
-                            <td>@teachName</td>
-                            @{ string teach2Name = (Person.GetInstanceAsync(flow.Teacher2Id).Result).Name;}       
-                            <td>@teach2Name</td>
-                            @{ string teach3Name = (Person.GetInstanceAsync(flow.Teacher3Id).Result).Name;}   
-                            <td>@teach3Name</td>
-                            @{ string subjectName = (Subject.GetInstanceAsync(flow.SubjectId).Result).Name;} 
-                            <td>@subjectName</td>
-                            @{ string semesterName = (Semester.GetInstanceAsync(flow.SemesterId).Result).Name;} 
-                            <td>@semesterName</td>
-                    </tr>
-                    }            
-                <tr><h2>Учебный план: </h2></tr>
-                <tr>
-                    <td><a href="#" class="btn-block">Лабораторные работы</td>
-                    <td><a href="#" class="btn-block">Практические работы</td>
-                    <td><a href="#" class="btn-block">Самостоятельные работы</td>
-                    <td><a href="#" class="btn-block">Курсовые работы</td>
-                    <td><a href="#" class="btn-block">Занятия</td>
-                    <td><a href="#" class="btn-block">Зарегистрированные студенты</td>
-                </tr> 
-            </tbody>
-        </table>
+    <div class="col-md-6">
+        @if (ViewBag.subject != null)
+        {
+            FlowSubject subject = ViewBag.subject;
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Поток:</h3>
+                </div>
+                <div class="col-md-6">
+                    @{string flowName = (Flow.GetInstanceAsync(subject.FlowId).Result)?.Name;}
+                    <h2>@flowName</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Предмет:</h3>
+                </div>
+                <div class="col-md-6">
+                    @{ string subjectName = (Subject.GetInstanceAsync(subject.SubjectId).Result)?.Name;}
+                    <h2>@subjectName</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Преподаватель (лекции):</h3>
+                </div>
+                <div class="col-md-6">
+                    @{ string teachName = (Person.GetInstanceAsync(subject.TeacherId).Result)?.Name;}
+                    <h2>@teachName</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Преподаватель (лаб. занятия):</h3>
+                </div>
+                <div class="col-md-6">
+                    @{ string teach2Name = (Person.GetInstanceAsync(subject.Teacher2Id).Result)?.Name;}
+                    <h2>@teach2Name</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Преподаватель (практ. занятия):</h3>
+                </div>
+                <div class="col-md-6">
+                    @{ string teach3Name = (Person.GetInstanceAsync(subject.Teacher3Id).Result)?.Name;}
+                    <h2>@teach3Name</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Семестр:</h3>
+                </div>
+                <div class="col-md-6">
+                    @{ string semesterName = (Semester.GetInstanceAsync(subject.SemesterId).Result)?.Name;}
+                    <h2>@semesterName</h2>
+                </div>
+            </div>
+         }
     </div>
 </div>

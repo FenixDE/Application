@@ -29,7 +29,7 @@
                         <td>@flowName</td>
                         @{ string teachName = (Person.GetInstanceAsync(flow.TeacherId).Result).Name;}
                         <td>Преподает: @teachName</td>
-                        <td>@Html.ActionLink("Перейти", "FlowsubjectM", "Subject")</td>
+                        <td><a href="/Subject/FlowSubjectM/@flow.ID">Перейти</a></td>
                     </tr>
             }
         }
