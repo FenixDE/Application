@@ -43,7 +43,7 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             List<Subject> subjects = result.Data.ToObject <List<Subject>>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return subjects;
             else
                 return new List<Subject>();
@@ -54,7 +54,7 @@ namespace WebApplication.Models
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Subjects/flow?subject={0}", ID));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
             {
                 Response result = JsonConvert.DeserializeObject<Response>(response.Content);
                 List<FlowSubject> subjects = result.Data.ToObject<List<FlowSubject>>();
@@ -75,7 +75,7 @@ namespace WebApplication.Models
             request.AddParameter("undefined", fSubjString, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод           
-            if (restResponse.StatusCode == HttpStatusCode.OK || restResponse.StatusCode == HttpStatusCode.Created)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;
@@ -124,7 +124,7 @@ namespace WebApplication.Models
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (restResponse.IsSuccessful)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;

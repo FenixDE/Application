@@ -27,10 +27,12 @@ namespace WebApplication.Models
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Departments/{0}", id));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Department departments = result.Data.ToObject<Department>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                Department departments = result.Data.ToObject<Department>();
                 return departments;
+            }
             else
                 return null;
         }
@@ -69,7 +71,7 @@ namespace WebApplication.Models
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
                                                                                                                 //IRestResponse response = client.Execute(request);
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;
@@ -90,7 +92,7 @@ namespace WebApplication.Models
             request.AddParameter("undefined", department, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;
@@ -107,7 +109,7 @@ namespace WebApplication.Models
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;

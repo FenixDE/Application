@@ -51,7 +51,7 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             List<Group> groups = result.Data.ToObject <List<Group>>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return groups;
             else
                 return new List<Group>();
@@ -82,7 +82,7 @@ namespace WebApplication.Models
             //var cancellationTokenSource = new CancellationTokenSource();
             //IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод           
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;
@@ -100,7 +100,7 @@ namespace WebApplication.Models
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;
@@ -122,7 +122,7 @@ namespace WebApplication.Models
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
             //IRestResponse response = client.Execute(request);
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;
@@ -143,7 +143,7 @@ namespace WebApplication.Models
             request.AddParameter("undefined", group, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;
@@ -160,7 +160,7 @@ namespace WebApplication.Models
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;

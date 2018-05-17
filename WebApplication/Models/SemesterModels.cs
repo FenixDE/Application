@@ -47,7 +47,7 @@ namespace WebApplication.Models
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             //return result.Data;
             List<Semester> semesters = result.Data.ToObject<List<Semester>>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return semesters;
             else
                 return new List<Semester>();

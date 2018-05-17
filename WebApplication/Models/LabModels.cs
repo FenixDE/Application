@@ -51,7 +51,7 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             //List<dynamic> faculties = result.Data as List<dynamic>;
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return result.Data;
             else
                 return false;
@@ -73,7 +73,7 @@ namespace WebApplication.Models
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
             //IRestResponse response = client.Execute(request);
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;

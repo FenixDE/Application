@@ -8,7 +8,7 @@ using System.Web;
 using System.Net;
 using System.Threading;
 
-namespace WebApplication.Models
+namespace WebApplication.Models 
 {
     public class Flow
     {
@@ -29,7 +29,7 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             Flow flows = result.Data.ToObject<Flow>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return flows;
             else
                 return null;
@@ -46,7 +46,7 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             List<Flow> flows = result.Data.ToObject<List<Flow>>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return flows;
             else
                 return new List<Flow>();
@@ -91,7 +91,7 @@ namespace WebApplication.Models
             request.AddParameter("undefined", flow, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;
@@ -107,7 +107,7 @@ namespace WebApplication.Models
             var request = new RestRequest(Method.DELETE);
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;

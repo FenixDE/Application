@@ -53,7 +53,7 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             List<Person> people = result.Data.ToObject<List<Person>>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return people;
             else
                 return new List<Person>();

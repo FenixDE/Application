@@ -26,11 +26,13 @@ namespace WebApplication.Models
         {
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Faculties/{0}",id));
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);            
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Faculty faculties = result.Data.ToObject<Faculty>();
-            if (response.StatusCode == HttpStatusCode.OK)
+            IRestResponse response = client.Execute(request);
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                Faculty faculties = result.Data.ToObject<Faculty>();
                 return faculties;
+            }
             else
                 return null;
         }       
@@ -47,7 +49,7 @@ namespace WebApplication.Models
             IRestResponse response = client.Execute(request);
             Response result = JsonConvert.DeserializeObject<Response>(response.Content);
             //List<dynamic> faculties = result.Data as List<dynamic>;
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return result.Data;
             else
                 return false;
@@ -69,7 +71,7 @@ namespace WebApplication.Models
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
             //IRestResponse response = client.Execute(request);
-            if (restResponse.StatusCode == HttpStatusCode.OK)
+            if (restResponse.IsSuccessful)
                 return true;
             else
                 return false;
@@ -90,7 +92,10 @@ namespace WebApplication.Models
             request.AddParameter("undefined", faculty, ParameterType.RequestBody);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
-            return false;
+            if (restResponse.IsSuccessful)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
@@ -104,7 +109,7 @@ namespace WebApplication.Models
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.IsSuccessful)
                 return true;
             else
                 return false;
