@@ -15,7 +15,7 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Index()
         {
             string fileURL = ConfigurationManager.AppSettings["RequestPath"];
-            ViewBag.persons = await Models.Person.GetCollectionAsync();
+            ViewBag.people = await Models.Person.GetCollectionAsync();
             return View();
         }
         [HttpPost]
@@ -49,7 +49,7 @@ namespace WebApplication.Controllers
             ViewBag.person = person; //запись полей
             return View("Up");
         }
-        public async Task<ActionResult> Person(string ID, string gId)
+        public async Task<ActionResult> Person(string ID)
         {
             if (ID != null)
             {
@@ -57,9 +57,9 @@ namespace WebApplication.Controllers
                 ViewBag.person = person;
                 //var departments = await Department.GetCollectionAsync();
                 //ViewBag.departments = departments;
-                var students = await Student.GetCollectionAsync(ID,gId);
-                students = students.FindAll(x => x.PersonId == person.ID);
-                ViewBag.students = students;
+                //var students = await Student.GetCollectionAsync(ID,gId);
+                //students = students.FindAll(x => x.PersonId == person.ID);
+                //ViewBag.students = students;
                 return View("Look");
             }
             else return View("~/Views/Shared/Error.cshtml");

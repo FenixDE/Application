@@ -15,11 +15,11 @@
             <th>Действие</th>
         </tr>
         @if (ViewBag.people != null)
-        {
+        {            
             foreach (var person in ViewBag.people)
             {
                 <tr>
-                    <td><a href="/Person/Person/@person.ID">@person.Name</a></td>
+                    <td><a href="/Person/Person/@person.ID">@person.ToString()</a></td>
                     <td><a href="/Person/Del/@person.ID" class="btn btn-primary btn-danger">Удалить</a></td>
                 </tr>
             }
@@ -32,24 +32,27 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title" id="AddLabel">Добавление кафедры</h3>
+                    <h3 class="modal-title" id="AddLabel">Добавление пользователя</h3>
                 </div>
                 <div class="modal-body">
                     @using (Html.BeginForm("Add", "Person", FormMethod.Post))
                     {
                     <div class="form-group">
-                        <label for="Abbreviation">Аббревиатура</label>
-                        <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Аббревиатура">
-
-                        <label for="FullName">Описание</label>
-                        <input type="text" class="form-control" id="FullName" name="Info" aria-describedby="name" placeholder="Введите описание">
-                        <label for="ManagerId">ManagerId</label>
-                        <input type="text" class="form-control" id="ManagerId" name="ManagerId" aria-describedby="Manager" placeholder="Введите описание">
+                        <label for="Surname">Фамилия</label>
+                        <input type="text" class="form-control" id="Surname" name="Surname" placeholder="Фамилия">
+                        <label for="Patronymic">Фамилия</label>
+                        <input type="text" class="form-control" id="Patronymic" name="Patronymic" placeholder="Отчество">
+                        <label for="Name">Имя</label>
+                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Фамилия">
+                        <label for="Student_id">Student_id</label>
+                        <input type="text" class="form-control" id="Student_id" name="Student_id">
+                        <label for="Passport_id">Passport_id</label>
+                        <input type="text" class="form-control" id="Passport_id" name="Passport_id">
                     </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-primary">Добавить</button>
-                        </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Добавить</button>          
+                    </div>
                     }
                 </div>
             </div>

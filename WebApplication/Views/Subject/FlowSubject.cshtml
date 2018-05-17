@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-md-6">
                     @{string flowName = (Flow.GetInstanceAsync(subject.FlowId).Result)?.Name;}
-                    <h2>@flowName</h2>
+                    <h4>@flowName</h4>
                 </div>
             </div>
             <div class="row">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="col-md-6">
                     @{ string subjectName = (Subject.GetInstanceAsync(subject.SubjectId).Result)?.Name;}
-                    <h2>@subjectName</h2>
+                    <h4>@subjectName</h4>
                 </div>
             </div>
             <div class="row">
@@ -30,8 +30,8 @@
                     <h3>Преподаватель (лекции):</h3>
                 </div>
                 <div class="col-md-6">
-                    @{ string teachName = (Person.GetInstanceAsync(subject.TeacherId).Result)?.Name;}
-                    <h2>@teachName</h2>
+                    @{ string teachName = (Person.GetInstanceAsync(subject.TeacherId).Result)?.ToString();}
+                    <h4>@teachName</h4>
                 </div>
             </div>
             <div class="row">
@@ -39,8 +39,8 @@
                     <h3>Преподаватель (лаб. занятия):</h3>
                 </div>
                 <div class="col-md-6">
-                    @{ string teach2Name = (Person.GetInstanceAsync(subject.Teacher2Id).Result)?.Name;}
-                    <h2>@teach2Name</h2>
+                    @{ string teach2Name = (Person.GetInstanceAsync(subject.Teacher2Id).Result)?.ToString();}
+                    <h4>@teach2Name</h4>
                 </div>
             </div>
             <div class="row">
@@ -48,8 +48,8 @@
                     <h3>Преподаватель (практ. занятия):</h3>
                 </div>
                 <div class="col-md-6">
-                    @{ string teach3Name = (Person.GetInstanceAsync(subject.Teacher3Id).Result)?.Name;}
-                    <h2>@teach3Name</h2>
+                    @{ string teach3Name = (Person.GetInstanceAsync(subject.Teacher3Id).Result)?.ToString();}
+                    <h4>@teach3Name</h4>
                 </div>
             </div>
             <div class="row">
@@ -58,9 +58,20 @@
                 </div>
                 <div class="col-md-6">
                     @{ string semesterName = (Semester.GetInstanceAsync(subject.SemesterId).Result)?.Name;}
-                    <h2>@semesterName</h2>
+                    <h4>@semesterName</h4>
                 </div>
             </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/Lab/Index">Лабораторные</a>
+                <a href="#">Практические</a>
+                <a href="#">Самостоятельные</a>
+                <a href="#">Курсовые</a>
+                <a href="#">Занятия</a>
+                <a href="#">Зарегистрированные студенты</a>
+            </div>
+        </div> 
          }
     </div>
 </div>

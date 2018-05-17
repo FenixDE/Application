@@ -46,7 +46,6 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Up(string ID)
         {
             Faculty faculty = await Models.Faculty.GetInstanceAsync(ID);
-            faculty.ID = ID;
             ViewBag.faculty = faculty; //запись полей
             return View();
         }

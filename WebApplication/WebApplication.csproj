@@ -154,6 +154,7 @@
     <Compile Include="Controllers\FlowController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LabController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\SemesterController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Models\FlowSubjectModels.cs" />
     <Compile Include="Models\GroupModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LabModels.cs" />
     <Compile Include="Models\PersonModels.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\SemesterModels.cs" />
@@ -246,6 +248,10 @@
     <Content Include="Views\Person\Up.cshtml" />
     <Content Include="Views\Home\Lab.cshtml" />
     <Content Include="Views\Subject\FlowSubject.cshtml" />
+    <Content Include="Views\Lab\Index.cshtml" />
+    <Content Include="Views\Lab\Look.cshtml" />
+    <Content Include="Views\Lab\Up.cshtml" />
+    <Content Include="Views\Lab\PlanLab.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
