@@ -8,7 +8,6 @@
         @if (ViewBag.subject != null)
         {
             <p><h1>@ViewBag.subject.Name</h1></p>
-            @*<p><h2>Кафедра: @ViewBag.dep.Name</h2></p>*@
             <p>@ViewBag.subject.Info</p>
             <tr>
                 <td><a href="/Subject/Up/@ViewBag.subject.ID" class="btn btn-primary">Изменить</a></td>
@@ -16,10 +15,9 @@
         }
     </div>
     <div class="col-md-4">
-        <p><h2>Поток: </h2></p>
         <table>
             <thead>
-                <tr>Поток</tr>
+                <tr><h2>Поток: </h2></tr>
             </thead>
             <tbody>
                 @if (ViewBag.sFlows != null)
@@ -31,7 +29,7 @@
                         <td>@flowName</td>
                         @{ string teachName = (Person.GetInstanceAsync(flow.TeacherId).Result).Name;}
                         <td>Преподает: @teachName</td>
-                        <td><a href="#" class="btn btn-link">Перейти</a></td>
+                        <td>@Html.ActionLink("Перейти", "FlowsubjectM", "Subject")</td>
                     </tr>
             }
         }

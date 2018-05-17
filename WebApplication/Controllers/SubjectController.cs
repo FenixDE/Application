@@ -24,7 +24,7 @@ namespace WebApplication.Controllers
             bool result = await Models.Subject.AddToFlow(flowSubject);
             return Redirect("/Subject");
         }
-        
+
 
         [HttpPost]
         public async Task<ActionResult> Add(Subject subject)
@@ -49,7 +49,7 @@ namespace WebApplication.Controllers
             await subject.Update();
             return Redirect("/Subject");
         }
-        [HttpGet] 
+        [HttpGet]
         public async Task<ActionResult> Up(string ID)
         {
             Subject subject = await Models.Subject.GetInstanceAsync(ID);
@@ -62,7 +62,7 @@ namespace WebApplication.Controllers
             if (ID != null)
             {
                 Subject subject = await Models.Subject.GetInstanceAsync(ID);
-                ViewBag.subject = subject;                
+                ViewBag.subject = subject;
                 List<Flow> flows = await Flow.GetCollectionAsync();
                 ViewBag.flows = flows;
                 List<Person> people = await Person.GetCollectionAsync();
@@ -71,11 +71,25 @@ namespace WebApplication.Controllers
                 ViewBag.sFlows = sFlows;
                 List<Semester> semesters = await Semester.GetCollectionAsync();
                 ViewBag.semesters = semesters;
-
-                
                 return View("Look");
             }
             else return View("~/Views/Shared/Error.cshtml");
+        }
+        
+        public async Task<ActionResult> FlowSubjectM(string ID)
+        {
+            Subject subject = await Models.Subject.GetInstanceAsync(ID);
+            ViewBag.subject = subject;
+            List<Flow> flows = await Flow.GetCollectionAsync();
+            ViewBag.flows = flows;
+            List<Person> people = await Person.GetCollectionAsync();
+            ViewBag.people = people;
+            List<FlowSubject> sFlows = await subject.GetForFlow();
+            ViewBag.sFlows = sFlows;
+            List<Semester> semesters = await Semester.GetCollectionAsync();
+            ViewBag.semesters = semesters;
+
+            return View("FlowSubject");
         }
     }
 }
