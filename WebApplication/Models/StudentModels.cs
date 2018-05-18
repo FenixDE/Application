@@ -79,12 +79,12 @@ namespace WebApplication.Models
                 var client = new RestClient("http://eljournal.ddns.net/api/Students/flow");
                 var request = new RestRequest(Method.POST);
                 request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Cache-Control", "no-cache");
                 request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
                 request.AddParameter("undefined", studentFlow, ParameterType.RequestBody);
                 IRestResponse response = client.Execute(request);
-                var cancellationTokenSource = new CancellationTokenSource();
-                IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
-                return restResponse.IsSuccessful;
+                IRestResponse restResponse = client.Execute(request);
+                return !restResponse.IsSuccessful;
             }
 
             public async Task<bool> Delete()
