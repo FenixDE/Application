@@ -73,7 +73,7 @@ namespace WebApplication.Controllers
                 students.Add(await Student.GetInstanceAsync(studentReg.StudentId));
 
             ViewBag.students = students;
-            return View();
+            return View("/Student/Registration.cshtml");
         }
     }
 }

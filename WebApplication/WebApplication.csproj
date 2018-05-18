@@ -169,7 +169,7 @@
     <Compile Include="Models\FlowSubjectModels.cs" />
     <Compile Include="Models\GroupModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-	<Compile Include="Models\LabModels.cs" />
+    <Compile Include="Models\LabModels.cs" />
     <Compile Include="Models\PersonModels.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\SemesterModels.cs" />
@@ -217,7 +217,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Student.cshtml" />
     <Content Include="Views\Home\Work.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -246,12 +245,12 @@
     <Content Include="Views\Person\Index.cshtml" />
     <Content Include="Views\Person\Look.cshtml" />
     <Content Include="Views\Person\Up.cshtml" />
-    <Content Include="Views\Home\Lab.cshtml" />
     <Content Include="Views\Subject\FlowSubject.cshtml" />
     <Content Include="Views\Lab\Index.cshtml" />
     <Content Include="Views\Lab\Look.cshtml" />
     <Content Include="Views\Lab\Up.cshtml" />
     <Content Include="Views\Lab\PlanLab.cshtml" />
+    <Content Include="Views\Student\Registrstion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

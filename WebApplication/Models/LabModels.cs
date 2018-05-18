@@ -42,19 +42,21 @@ namespace WebApplication.Models
         /// Возвращает полный список факультетов
         /// </summary>
         /// <returns></returns>
-        public static async Task<dynamic> GetCollectionAsync()
+        public static async Task<List<Lab>> GetCollectionAsync()
         {
             var client = new RestClient("http://eljournal.ddns.net/api/LabWork");
             var request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             //request.AddHeader("Cache-Control", "no-cache");
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            //List<dynamic> faculties = result.Data as List<dynamic>;
             if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                //List<dynamic> faculties = result.Data as List<dynamic>;
                 return result.Data;
+            }
             else
-                return false;
+                return new List<Lab>();
         }
 
         /// <summary>

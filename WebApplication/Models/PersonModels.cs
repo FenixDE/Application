@@ -51,10 +51,12 @@ namespace WebApplication.Models
             var client = new RestClient("http://eljournal.ddns.net/api/People");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            List<Person> people = result.Data.ToObject<List<Person>>();
             if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<Person> people = result.Data.ToObject<List<Person>>();
                 return people;
+            }
             else
                 return new List<Person>();
         }

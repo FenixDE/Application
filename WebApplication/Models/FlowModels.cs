@@ -27,10 +27,12 @@ namespace WebApplication.Models
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Flows/{0}", id));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            Flow flows = result.Data.ToObject<Flow>();
             if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                Flow flows = result.Data.ToObject<Flow>();
                 return flows;
+            }
             else
                 return null;
         }
@@ -44,10 +46,12 @@ namespace WebApplication.Models
             var client = new RestClient("http://eljournal.ddns.net/api/Flows");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            List<Flow> flows = result.Data.ToObject<List<Flow>>();
             if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<Flow> flows = result.Data.ToObject<List<Flow>>();
                 return flows;
+            }
             else
                 return new List<Flow>();
         }

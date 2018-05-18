@@ -46,11 +46,13 @@ namespace WebApplication.Models
             var client = new RestClient("http://eljournal.ddns.net/api/Departments");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            //List<Department> departments = result.Data.ToObject <List<Department>>();
-            //List<dynamic> departments = result.Data as List<dynamic>;
-            if (response.StatusCode == HttpStatusCode.OK)
-                return result.Data;
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<Department> departments = result.Data.ToObject <List<Department>>();
+                //List<dynamic> departments = result.Data as List<dynamic>;
+                return departments;
+            }
             else
                 return new List<Department>();
         }

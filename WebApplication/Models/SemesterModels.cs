@@ -39,16 +39,18 @@ namespace WebApplication.Models
             else
                 return null;
         }
-        public static async Task<dynamic> GetCollectionAsync()
+        public static async Task<List<Semester>> GetCollectionAsync()
         {
             var client = new RestClient("http://eljournal.ddns.net/api/Semester");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            //return result.Data;
-            List<Semester> semesters = result.Data.ToObject<List<Semester>>();
             if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                //return result.Data;
+                List<Semester> semesters = result.Data.ToObject<List<Semester>>();
                 return semesters;
+            }
             else
                 return new List<Semester>();
         }

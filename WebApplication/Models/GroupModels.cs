@@ -49,10 +49,12 @@ namespace WebApplication.Models
             var client = new RestClient("http://eljournal.ddns.net/api/Groups");
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            List<Group> groups = result.Data.ToObject <List<Group>>();
             if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<Group> groups = result.Data.ToObject<List<Group>>();
                 return groups;
+            }
             else
                 return new List<Group>();
         }
