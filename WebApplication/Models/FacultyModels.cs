@@ -41,18 +41,20 @@ namespace WebApplication.Models
         /// Возвращает полный список факультетов
         /// </summary>
         /// <returns></returns>
-        public static async Task<dynamic> GetCollectionAsync()
+        public static async Task<List<Faculty>> GetCollectionAsync()
         {
             var client = new RestClient("http://eljournal.ddns.net/api/Faculties");
             var request = new RestRequest(Method.GET);
             //request.AddHeader("Cache-Control", "no-cache");
             IRestResponse response = client.Execute(request);
-            Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-            //List<dynamic> faculties = result.Data as List<dynamic>;
             if (response.IsSuccessful)
-                return result.Data;
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<Faculty> faculties = result.Data.ToObject<List<Faculty>>();
+                return faculties;
+            }
             else
-                return false;
+                return new List<Faculty>();
         }
 
         /// <summary>

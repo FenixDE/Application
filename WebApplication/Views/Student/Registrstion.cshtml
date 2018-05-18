@@ -1,0 +1,65 @@
+﻿@using WebApplication.Models
+@{
+    ViewBag.Title = "Registrstion";
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Зарегистрированные студенты</title>
+</head>
+<body>
+    <table class="table table-hover">
+        @if (ViewBag.students != null)
+        {
+            foreach (var student in (List<Student>)ViewBag.students)
+            {
+                Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
+                <tr>
+                    <td><a href="/Student/Student/@student.ID">@studentInfo.ToString()</a></td>
+                    <td><a href="/Student/Del/@student.ID" class="btn btn-primary btn-danger">Удалить</a></td>
+                </tr>
+            }
+        }
+    </table>
+    <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title" id="AddLabel">Добавление студента</h3>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("GetStudentRegistry", "Student", FormMethod.Post))
+                    {
+                        <div class="form-group">
+                            <label>Студент</label>
+                            @{
+                                List<Person> people = Person.GetCollectionAsync().Result;
+                            }
+                            <select id="AddLabel" name="PersonId">
+                                @foreach (var person in people)
+                                {
+                                    <option value="@person.ID">@person.ToString()</option>
+                                }
+                            </select>
+
+                            <input type="hidden" name="FlowSubjectId" value="@ViewBag.FlowSubject.ID" />
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+    </ul>
+</body>
+</html>
+
