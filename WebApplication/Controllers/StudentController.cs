@@ -6,7 +6,7 @@ using System.Web;
 using WebApplication.Models;
 using System.Web.Mvc;
 using System.Threading.Tasks;
-
+using WebApplication.Providers;
 
 namespace WebApplication.Controllers
 {
@@ -53,7 +53,7 @@ namespace WebApplication.Controllers
 
         [HttpGet]
         [Route("Student/Del/{ID}")]
-        public async Task<ActionResult> Del(string ID)
+        public async Task<ActionResult> DelStudent(string ID)
         {
             //TODO: необходимо получить студента по id
             Student student = await Student.GetInstanceAsync(ID);
@@ -64,16 +64,70 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
+        [Route("Student/Del/registry/{ID}")]
+        public async Task<ActionResult> DelRegistration(string ID)
+        {
+            Student.StudentFlowSubject registry = new Student.StudentFlowSubject
+            {
+                ID = ID
+            };
+            if (await registry.Delete())
+                return Redirect(Request.UrlReferrer.ToString());
+            else
+                return View("~/Views/Shared/Error.cshtml");
+        }
+
+        [HttpGet]
         [Route("Student/{flowSubjectId}/registry")]
+        [AllowCrossSiteJsonAttribute]
         public async Task<ActionResult> GetStudentRegistry(string flowSubjectId)
         {
-            var studentsRegistry = await Student.StudentFlowSubject.GetCollectionAsync(flowSubjectId);
-            List<Student> students = new List<Student>(studentsRegistry.Count);
-            foreach(var studentReg in studentsRegistry)
-                students.Add(await Student.GetInstanceAsync(studentReg.StudentId));
-
+            var students = await Student.StudentFlowSubject.GetCollectionAsync(flowSubjectId);
             ViewBag.students = students;
-            return View("/Student/Registration.cshtml");
+            ViewBag.flowSubjectId = flowSubjectId;
+            //'Access-Control-Allow-Origin'
+            
+            return View("Registration");
+        }
+
+
+        [HttpGet]
+        [Route("Student/registry/{flowSubjectId}")]
+        public async Task<ActionResult> AddRegistration(string flowSubjectId)
+        {
+            List<Semester> semesters = await Semester.GetCollectionAsync();
+            ViewBag.semesters = semesters;
+            List<Group> groups = await Group.GetCollectionAsync();
+            ViewBag.groups = groups;
+            ViewBag.flowSubjectId = flowSubjectId;
+            return View("AddReg");
+        }
+        
+        [HttpPost]
+        [Route("Student/registry")]
+        public async Task<ActionResult> AddRegistration(string groupId, string semesterId, 
+            string studentId, string flowSubjectId)
+        {
+            if (string.IsNullOrEmpty(studentId))
+            {
+                List<Student> students = await Student.GetCollectionAsync(groupId, semesterId);
+                List<Person> people = await Person.GetCollectionAsync();
+                ViewBag.students = students;
+                ViewBag.flowSubjectId = flowSubjectId;
+                return View("AddReg");
+            }
+            else
+            {
+                Student.StudentFlowSubject studentFlowSubject = new Student.StudentFlowSubject
+                {
+                    StudentId = studentId,
+                    FlowSubjectId = flowSubjectId
+                };
+                if (await studentFlowSubject.Add())
+                    return Redirect(string.Format("/Student/{0}/registry", flowSubjectId));
+                else
+                    return View("~/Views/Shared/Error.cshtml");
+            }
         }
     }
 }

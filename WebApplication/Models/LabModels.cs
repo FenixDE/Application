@@ -53,7 +53,7 @@ namespace WebApplication.Models
             {
                 Response result = JsonConvert.DeserializeObject<Response>(response.Content);
                 //List<dynamic> faculties = result.Data as List<dynamic>;
-                return result.Data;
+                return result.Data.ToObject<List<Lab>>();
             }
             else
                 return new List<Lab>();

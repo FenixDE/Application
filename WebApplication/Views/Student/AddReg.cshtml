@@ -1,0 +1,44 @@
+﻿@using WebApplication.Models;
+@{
+    ViewBag.Title = "AddReg";
+}
+
+<div class="row">
+    <div class="form-group">
+        <form action="/Student/registry" method="post">
+            <input type="hidden" name="flowSubjectId" value="@ViewBag.flowSubjectId" />
+            @if (ViewBag.groups != null)
+            {
+                <select id="group" name="groupId">
+                    @foreach (Group group in ViewBag.groups)
+                    {
+                        <option value="@group.ID">@group.Name</option>
+                    }
+                </select>
+            }
+            @if (ViewBag.semesters != null)
+            {
+                <select id="semester" name="semesterId">
+                @foreach (Semester semester in ViewBag.semesters)
+                {
+                    <option value="@semester.ID">@semester.Name</option>
+                }
+                </select>
+            }
+            
+
+            @if(ViewBag.students != null)
+            {
+                <select id="students" name="studentId">
+                    @foreach(Student student in ViewBag.students)
+                    {
+                        Person person = Person.GetInstanceAsync(student.PersonId).Result;
+                        <option value="@student.ID">@person.ToString()</option>
+                    }
+                </select>
+            }
+            <input type="submit" value="Далее" />
+        </form>
+    </div>
+</div>
+

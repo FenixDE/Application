@@ -176,6 +176,7 @@
     <Compile Include="Models\StudentModels.cs" />
     <Compile Include="Models\SubjectModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\AllowCrossSiteJsonAttribute.cs" />
     <Compile Include="Providers\APIProvider.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -250,7 +251,8 @@
     <Content Include="Views\Lab\Look.cshtml" />
     <Content Include="Views\Lab\Up.cshtml" />
     <Content Include="Views\Lab\PlanLab.cshtml" />
-    <Content Include="Views\Student\Registrstion.cshtml" />
+    <Content Include="Views\Student\Registration.cshtml" />
+    <Content Include="Views\Student\AddReg.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
