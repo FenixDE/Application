@@ -41,6 +41,16 @@ namespace WebApplication.Controllers
                 return View("~/Views/Shared/Error.cshtml");
         }
 
+        public async Task<ActionResult> Add(Student.StudentFlowSubject registration)
+        {
+            if(registration != null)
+            {
+                if (await registration.Add())
+                    return View(); //TODO: редирект на страницу списка зареганных студентов
+            }
+            return View("~/Views/Shared/Error.cshtml");
+        }
+
         [HttpGet]
         [Route("Student/Del/{ID}")]
         public async Task<ActionResult> Del(string ID)
