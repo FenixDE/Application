@@ -14,10 +14,13 @@
         {
             foreach (var studentReg in (List<Student.StudentFlowSubject>)ViewBag.students)
             {
-                Student student = Student.GetInstanceAsync(studentReg.StudentId).Result;
-                Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
-                Group group = Group.GetInstanceAsync(student.GroupId).Result;
+
                 <tr>
+                    @{ 
+                        Student student = Student.GetInstanceAsync(studentReg.StudentId).Result;
+                        Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
+                        Group group = Group.GetInstanceAsync(student.GroupId).Result;
+                    }
                     <td><a href="#">@studentInfo.ToString() (@group.Name)</a></td>
                     <td><a href="Student/Del/registry/@studentReg.ID" class="btn btn-primary btn-danger">Удалить</a></td>
                 </tr>

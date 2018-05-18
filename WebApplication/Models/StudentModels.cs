@@ -22,8 +22,7 @@ namespace WebApplication.Models
         {
             var client = new RestClient(string.Format("http://eljournal.ddns.net/api/Students/{0}", id));
             var request = new RestRequest(Method.GET);
-            var cancellationTokenSource = new CancellationTokenSource();
-            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
+            IRestResponse restResponse = client.Execute(request);
             if (restResponse.IsSuccessful)
             {
                 Response result = JsonConvert.DeserializeObject<Response>(restResponse.Content);
