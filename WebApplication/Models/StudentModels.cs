@@ -56,15 +56,12 @@ namespace WebApplication.Models
             public string StudentId { get; set; }
             public string FlowSubjectId { get; set; }
 
-            public async Task<List<StudentFlowSubject>> GetCollectionAsync(string semesterId, 
-                string studentId = null, string flowSubjectId = null)
+            public static async Task<List<StudentFlowSubject>> GetCollectionAsync(string flowSubjectId)
             {
-                var client = new RestClient(string.Format("http://eljournal.ddns.net/api/Students/flow/{0}", semesterId));
+                var client = new RestClient(string.Format("http://eljournal.ddns.net/api/Students/flow/{0}", flowSubjectId));
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("Postman-Token", "b27d2b8f-718a-4d65-9f24-c1472244004d");
                 request.AddHeader("Cache-Control", "no-cache");
-                request.AddQueryParameter("student", studentId);
-                request.AddQueryParameter("flowSubject", flowSubjectId);
                 var cancellationTokenSource = new CancellationTokenSource();
                 IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
                 if (restResponse.IsSuccessful)
@@ -75,6 +72,30 @@ namespace WebApplication.Models
                 }
                 else
                     return new List<StudentFlowSubject>();
+            }
+
+            public async Task<bool> Add()
+            {
+                string studentFlow = JsonConvert.SerializeObject(this);
+                var client = new RestClient("http://eljournal.ddns.net/api/Students/flow");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+                request.AddParameter("undefined", studentFlow, ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+                var cancellationTokenSource = new CancellationTokenSource();
+                IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+                return restResponse.IsSuccessful;
+            }
+
+            public async Task<bool> Delete()
+            {
+                var client = new RestClient(string.Format("http://eljournal.ddns.net/api/Students/flow/{0}", ID));
+                var request = new RestRequest(Method.DELETE);
+                request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+                var cancellationTokenSource = new CancellationTokenSource();
+                IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+                return restResponse.IsSuccessful;
             }
         }
 

@@ -54,10 +54,16 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        [Route("Student/{studentId}/registry")]
-        public async Task<ActionResult> GetStudentSubject(string studentId)
+        [Route("Student/{flowSubjectId}/registry")]
+        public async Task<ActionResult> GetStudentRegistry(string flowSubjectId)
         {
+            var studentsRegistry = await Student.StudentFlowSubject.GetCollectionAsync(flowSubjectId);
+            List<Student> students = new List<Student>(studentsRegistry.Count);
+            foreach(var studentReg in studentsRegistry)
+                students.Add(await Student.GetInstanceAsync(studentReg.StudentId));
 
+            ViewBag.students = students;
+            return View();
         }
     }
 }
