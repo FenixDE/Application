@@ -253,9 +253,11 @@
     <Content Include="Views\Lab\PlanLab.cshtml" />
     <Content Include="Views\Student\Registration.cshtml" />
     <Content Include="Views\Student\AddReg.cshtml" />
+    <Content Include="Views\Student\LabWorkStudents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\LabWork\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -4,74 +4,55 @@
 }
 <div class="row">
     <div class="col-md-6">
-        @if (ViewBag.subject != null)
-        {
-            FlowSubject subject = ViewBag.subject;
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Поток:</h3>
-                </div>
-                <div class="col-md-6">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th><h3>Поток:</h3></th>
+                    <th><h3>Предмет:</h3></th>
+                    <th><h3>Преподаватель (лекции):</h3></th>
+                    <th><h3>Преподаватель (лаб. занятия):</h3></th>
+                    <th><h3>Преподаватель (практ. занятия):</h3></th>
+                    <th><h3>Семестр:</h3></th>
+                </tr>
+            </thead>
+            @if (ViewBag.subject != null)
+    {
+        FlowSubject subject = ViewBag.subject;
+            <tr>
+                <th>
                     @{string flowName = (Flow.GetInstanceAsync(subject.FlowId).Result)?.Name;}
-                    <h4>@flowName</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Предмет:</h3>
-                </div>
-                <div class="col-md-6">
+                    <h5>@flowName</h5>
+                </th>
+                <th>
                     @{ string subjectName = (Subject.GetInstanceAsync(subject.SubjectId).Result)?.Name;}
-                    <h4>@subjectName</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Преподаватель (лекции):</h3>
-                </div>
-                <div class="col-md-6">
+                    <h5>@subjectName</h5>
+                </th>
+                <th>
                     @{ string teachName = (Person.GetInstanceAsync(subject.TeacherId).Result)?.ToString();}
-                    <h4>@teachName</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Преподаватель (лаб. занятия):</h3>
-                </div>
-                <div class="col-md-6">
+                    <h5>@teachName</h5>
+                </th>
+                <th>
                     @{ string teach2Name = (Person.GetInstanceAsync(subject.Teacher2Id).Result)?.ToString();}
-                    <h4>@teach2Name</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Преподаватель (практ. занятия):</h3>
-                </div>
-                <div class="col-md-6">
+                    <h5>@teach2Name</h5>
+                </th>
+                <th>
                     @{ string teach3Name = (Person.GetInstanceAsync(subject.Teacher3Id).Result)?.ToString();}
-                    <h4>@teach3Name</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3>Семестр:</h3>
-                </div>
-                <div class="col-md-6">
+                    <h5>@teach3Name</h5>
+                </th>
+                <th>
                     @{ string semesterName = (Semester.GetInstanceAsync(subject.SemesterId).Result)?.Name;}
-                    <h4>@semesterName</h4>
-                </div>
-            </div>
-        
-        <div class="row">
-            <div class="col-md-6">
-                <a href="/Lab/plan/@subject.ID">Лабораторные</a>
-                <a href="#">Практические</a>
-                <a href="#">Самостоятельные</a>
-                <a href="#">Курсовые</a>
-                <a href="#">Занятия</a>
-                <a href="/Student/@subject.ID/registry">Зарегистрированные студенты</a>
-            </div>
-        </div> 
-         }
+                    <h5>@semesterName</h5>
+                </th>
+            </tr>
+            <tr>
+                <th><a href="/Lab/plan/@subject.ID">Лабораторные</a></th>
+                <th><a href="#">Практические</a></th>
+                <th><a href="#">Самостоятельные</a></th>
+                <th><a href="#">Курсовые</a></th>
+                <th><a href="#">Занятия</a></th>
+                <th><a href="/Student/@subject.ID/registry">Зарегистрированные студенты</a></th>
+            </tr>
+        }
+        </table>
     </div>
 </div>

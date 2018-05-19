@@ -15,7 +15,7 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Index()
         {
             string fileURL = ConfigurationManager.AppSettings["RequestPath"];
-            ViewBag.labs = await Models.Lab.GetCollectionAsync();
+            ViewBag.labs = await Lab.GetCollectionAsync();
             return View();
         }
 
@@ -48,10 +48,10 @@ namespace WebApplication.Controllers
                 return View("~/Views/Shared/Error.cshtml");
         }
 
-        [HttpGet] 
+        [HttpGet]
         public async Task<ActionResult> Up(string ID)
         {
-            Lab lab = await Models.Lab.GetInstanceAsync(ID);
+            Lab lab = await Lab.GetInstanceAsync(ID);
             if (lab == null)
                 ViewBag.lab = lab; //запись полей
             return View();
@@ -73,7 +73,7 @@ namespace WebApplication.Controllers
         [Route("Lab/plan")]
         public async Task<ActionResult> AddLabPlan(LabPlan plan)
         {
-            if(plan == null)
+            if (plan == null)
                 return View("~/Views/Shared/Error.cshtml");
 
             if (await plan.Push())
@@ -81,5 +81,37 @@ namespace WebApplication.Controllers
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
+
+        [HttpGet]
+        public async Task<ActionResult> Get(string fsid)
+        {
+            var subflow = await FlowSubject.GetInstanceAsync(fsid);
+            ViewBag.subflow = subflow;
+            //var sts = await Student.GetCollectionAsync();
+            //ViewBag.sts = await Lab.GetM(subflow);
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Ad(Lab lab)
+        {
+            bool result = await lab.AddM();
+            if (result)
+                return Redirect("/Index");
+            else
+                return View("~/Views/Shared/Error.cshtml");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> D(string ID)
+        {
+            Lab lab = new Lab();
+            lab.ID = ID;
+            if (lab?.DelM() ?? false)
+                return Redirect("/Lab");
+            else
+                return View("~/Views/Shared/Error.cshtml");
+        }        
     }
 }

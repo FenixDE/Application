@@ -90,6 +90,18 @@ namespace WebApplication.Controllers
             return View("Registration");
         }
 
+        [HttpGet]
+        [Route("Student/{flowSubjectId}/labwork")]
+        [AllowCrossSiteJsonAttribute]
+        public async Task<ActionResult> GetStudentLab(string flowSubjectId)
+        {
+            var students = await Student.StudentFlowSubject.GetCollectionAsync(flowSubjectId);
+            ViewBag.students = students;
+            ViewBag.flowSubjectId = flowSubjectId;
+            //'Access-Control-Allow-Origin'
+            return View("LabWorkStudents");
+        }
+
 
         [HttpGet]
         [Route("Student/registry/{flowSubjectId}")]
@@ -129,5 +141,15 @@ namespace WebApplication.Controllers
                     return View("~/Views/Shared/Error.cshtml");
             }
         }
+
+        //[HttpGet]
+        //public async Task<ActionResult> LabWorkStudents(string flowSubjectId)
+        //{
+        //    var fss = await FlowSubject.GetInstanceAsync(flowSubjectId);
+        //    ViewBag.fss = fss;
+        //    var lp = await Lab.GetInstanceAsync(flowSubjectId);
+        //    ViewBag.lp = lp;
+        //    return View("LabWorkStudents");
+        //}
     }
 }

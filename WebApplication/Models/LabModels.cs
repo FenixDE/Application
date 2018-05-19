@@ -118,8 +118,56 @@ namespace WebApplication.Models
             else
                 return false;
         }
-    }
 
+
+        //Получение выполненных студентом лабораторных работ по предмету
+        public static async Task<List<Lab>> GetM(string studentFlowId, string subjectFlowId)
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/exec/{0}/{1}", studentFlowId, subjectFlowId));
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<Lab> labs = result.Data.ToObject<List<Lab>>();
+                return labs;
+            }
+            else
+                return new List<Lab>();
+        }
+        //Отметка о выполнении лабораторной работы
+        public async Task<bool> AddM()
+        {
+            string lab = JsonConvert.SerializeObject(this);
+            var client = new RestClient("http://eljournal.ddns.net/api/LabWork/exec");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            request.AddParameter("undefined", lab, ParameterType.RequestBody);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод
+                                                                                                                //IRestResponse response = client.Execute(request);
+            if (restResponse.IsSuccessful)
+                return true;
+            else
+                return false;
+        }
+        //Удаление отметки о выполнении лабораторной работы
+        public bool DelM()
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/exec/{0}", ID));
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            IRestResponse response = client.Execute(request);
+            if (response.IsSuccessful)
+                return true;
+            else
+                return false;
+        }
+    }
+    
     public class LabPlan
     {
         public string ID { get; set; }
@@ -156,6 +204,6 @@ namespace WebApplication.Models
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
             return restResponse.IsSuccessful;
-        }
+        }        
     }
 }

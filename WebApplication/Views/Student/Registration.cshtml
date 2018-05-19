@@ -10,22 +10,28 @@
 </head>
 <body>
     <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
         @if (ViewBag.students != null)
+    {
+        foreach (var studentReg in (List<Student.StudentFlowSubject>)ViewBag.students)
         {
-            foreach (var studentReg in (List<Student.StudentFlowSubject>)ViewBag.students)
-            {
 
-                <tr>
-                    @{ 
-                        Student student = Student.GetInstanceAsync(studentReg.StudentId).Result;
-                        Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
-                        Group group = Group.GetInstanceAsync(student.GroupId).Result;
-                    }
-                    <td><a href="#">@studentInfo.ToString() (@group.Name)</a></td>
-                    <td><a href="Student/Del/registry/@studentReg.ID" class="btn btn-primary btn-danger">Удалить</a></td>
-                </tr>
-            }
-        }
+            <tr>
+                @{
+                Student student = Student.GetInstanceAsync(studentReg.StudentId).Result;
+                Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
+                Group group = Group.GetInstanceAsync(student.GroupId).Result;
+                }
+                <td><a href="#">@studentInfo.ToString() (@group.Name)</a></td>
+                <td><a href="Student/Del/registry/@studentReg.ID" class="btn btn-primary btn-danger">Удалить</a></td>
+            </tr>
+    }
+}
     </table>
     <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">

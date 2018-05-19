@@ -9,23 +9,11 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         body {
-            background-color:ghostwhite;
+            background-color: floralwhite;
         }
         a {
             cursor:pointer;
-        }
-        a::first-line {
-            color: skyblue;
-        }
-
-        a:link {
-            color: blueviolet; /* Цвет ссылок */
-            padding: 5px; /* Поля вокруг текста */
-        }
-
-        a:hover {
-            color: blueviolet; /* Цвет ссылки */
-        }
+        }               
     </style>
 </head>
 <body>
@@ -41,20 +29,20 @@
                 </ul>
                 @if (@*Request.IsAuthenticated*@false)
 {
-using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+@*using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 {
 @Html.AntiForgeryToken()
 
 <ul class="nav navbar-nav navbar-right">
     <li>
-        @Html.ActionLink("Здравствуйте!"@*, " + User.Identity.GetUserName() + "*@, "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        @Html.ActionLink("Здравствуйте!"@*, " + User.Identity.GetUserName() + ", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
     </li>
     <li><a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a></li>
 </ul>
 }
 }
 else
-{
+{*@
 <div class="col-md-12 col-xs-12">
     <ul class="nav navbar-nav navbar-right">
         @*<li>@Html.ActionLink("Регистрация", "Register", "Account")</li>*@

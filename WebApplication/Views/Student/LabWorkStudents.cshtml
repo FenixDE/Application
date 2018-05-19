@@ -1,0 +1,37 @@
+﻿@using WebApplication.Models
+@{
+    ViewBag.Title = "LabWorkStudent";
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Зарегистрированные студенты</title>
+</head>
+<body>
+    <table class="table table-hover">
+        <thead>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Вополнил (&or;)</th>
+                </tr>
+            </thead>
+        @if (ViewBag.students != null)
+        {
+            foreach (var studentReg in (List<Student.StudentFlowSubject>)ViewBag.students)
+            {
+
+                <tr>
+                    @{
+                        Student student = Student.GetInstanceAsync(studentReg.StudentId).Result;
+                        Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
+                        Group group = Group.GetInstanceAsync(student.GroupId).Result;
+                    }
+                    <td><a href="#">@studentInfo.ToString() (@group.Name)</a></td>
+                    <td><input type="checkbox" /></td>
+                </tr>
+            }
+        }
+    </table>    
+</body>
+</html>
