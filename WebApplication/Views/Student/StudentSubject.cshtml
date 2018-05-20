@@ -1,29 +1,30 @@
 ﻿@using WebApplication.Models
 @{
-    ViewBag.Title = "Студенты";
+    ViewBag.Title = "StdentSubject";
 }
-<!DOCTYPE HTML>
+
+!DOCTYPE HTML>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Студенты</title>
+    <title>Предметы</title>
 </head>
 <body>
-    
     <table class="table table-hover">
         @if (ViewBag.students != null)
         {
-            foreach (var student in (List<Student>)ViewBag.students)
+            foreach (var student in (List<Student.StudentFlowSubject>)ViewBag.students)
             {
-                Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
-                <tr>
-                    <td><a href="/Student/StudentSubject/@student.ID">@studentInfo.ToString()</a></td>
-                    <td><a href="/Student/Del/@student.ID" class="btn btn-primary btn-danger">Удалить</a></td>
-                </tr>
+                FlowSubject fsubject = (FlowSubject.GetInstanceAsync(student.FlowSubjectId).Result);
+                Subject subject = (Subject.GetInstanceAsync(fsubject.SubjectId).Result);
+            <tr>
+
+                <td><a href="/Lab/LabWorkStudent/@student.StudentId">@subject.Name</a></td>
+            </tr>
             }
-        }
+        }       
     </table>
-    <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
+    @*<div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -61,6 +62,7 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
-    </ul>
+    </ul>*@
 </body>
 </html>
+

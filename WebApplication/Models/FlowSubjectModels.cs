@@ -40,5 +40,22 @@ namespace WebApplication.Models
                 return null;
 
         }
+        //public static async Task<List<LabWorkPlan>> GetCollectionAsync(string )
+        //{
+        //    //if (string.IsNullOrEmpty(id))
+        //    //    return new List<LabWorkPlan>();
+        //    var client = new RestClient("http://eljournal.ddns.net/api/LabWork/plan");
+        //    var request = new RestRequest(Method.GET);
+        //    var cancellationTokenSource = new CancellationTokenSource();
+        //    IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+        //    if (restResponse.IsSuccessful)
+        //    {
+        //        Response result = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+        //        List<LabWorkPlan> planWorks = result.Data.ToObject<List<LabWorkPlan>>();
+        //        return planWorks;
+        //    }
+        //    else
+        //        return new List<LabWorkPlan>();
+        //}
     }
 }

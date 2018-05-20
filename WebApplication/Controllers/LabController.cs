@@ -6,6 +6,8 @@ using System.Web;
 using WebApplication.Models;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net;
 
 namespace WebApplication.Controllers
 {
@@ -62,7 +64,7 @@ namespace WebApplication.Controllers
         {
             var subflow = await FlowSubject.GetInstanceAsync(fsid);
             ViewBag.subflow = subflow;
-            var workplan = await Models.LabPlan.GetCollectionAsync(fsid);
+            var workplan = await LabWorkPlan.GetCollectionAsync(fsid);
             ViewBag.workplan = workplan;
             var works = await Lab.GetCollectionAsync();
             ViewBag.works = works;
@@ -71,7 +73,7 @@ namespace WebApplication.Controllers
 
         [HttpPost]
         [Route("Lab/plan")]
-        public async Task<ActionResult> AddLabPlan(LabPlan plan)
+        public async Task<ActionResult> AddLabPlan(LabWorkPlan plan)
         {
             if (plan == null)
                 return View("~/Views/Shared/Error.cshtml");
@@ -82,36 +84,59 @@ namespace WebApplication.Controllers
                 return View("~/Views/Shared/Error.cshtml");
         }
 
+        // получить список выполненных студентом лаб работ по предмету (все рег. пользователи)
         [HttpGet]
-        public async Task<ActionResult> Get(string fsid)
+        [Route("LabWork/exec/{studentFlowId}/{subjectFlowId}")]
+        public async Task<ActionResult> GetExec(string studentFlowId, string subjectFlowId)
         {
-            var subflow = await FlowSubject.GetInstanceAsync(fsid);
-            ViewBag.subflow = subflow;
-            //var sts = await Student.GetCollectionAsync();
-            //ViewBag.sts = await Lab.GetM(subflow);
-            return View();
+            FlowSubject fSubject = await FlowSubject.GetInstanceAsync(subjectFlowId);
+            if (fSubject == null)
+                return View("~/Views/Shared/Error.cshtml");
+
+            var exLabs = await ExecutedLabWork.GetExec(studentFlowId);
+            ViewBag.exLabs = exLabs;
+            return View("/LabWorkStudent");
         }
 
-
+        // установить лаб работу из плана как выполненную студентом (преподаватель, администратор)
         [HttpPost]
-        public async Task<ActionResult> Ad(Lab lab)
+        [Route("LabWork/exec")]
+        public async Task<ActionResult> PostExec(ExecutedLabWork exLab)
         {
-            bool result = await lab.AddM();
-            if (result)
-                return Redirect("/Index");
-            else
-                return View("~/Views/Shared/Error.cshtml");
+
+            return null;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> D(string ID)
-        {
-            Lab lab = new Lab();
-            lab.ID = ID;
-            if (lab?.DelM() ?? false)
-                return Redirect("/Lab");
-            else
-                return View("~/Views/Shared/Error.cshtml");
-        }        
+        //[HttpGet]
+        //public async Task<ActionResult> Get(string fsid)
+        //{
+        //    var subflow = await FlowSubject.GetInstanceAsync(fsid);
+        //    ViewBag.subflow = subflow;
+        //    //var sts = await Student.GetCollectionAsync();
+        //    //ViewBag.sts = await Lab.GetM(subflow);
+        //    return View();
+        //}
+
+
+        //[HttpPost]
+        //public async Task<ActionResult> AddEx(LabWork lab)
+        //{
+        //    bool result = await lab.Add();
+        //    if (result)
+        //        return Redirect("/Index");
+        //    else
+        //        return View("~/Views/Shared/Error.cshtml");
+        //}
+
+        //[HttpGet]
+        //public async Task<ActionResult> D(string ID)
+        //{
+        //    LabWork lab = new LabWork();
+        //    lab.ID = ID;
+        //    if (lab?.Del() ?? false)
+        //        return Redirect("/Lab");
+        //    else
+        //        return View("~/Views/Shared/Error.cshtml");
+        //}        
     }
 }

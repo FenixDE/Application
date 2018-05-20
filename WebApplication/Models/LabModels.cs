@@ -118,25 +118,99 @@ namespace WebApplication.Models
             else
                 return false;
         }
+    }
+    
+    public class LabWorkPlan
+    {
+        public string ID { get; set; }
+        public virtual Lab Work { get; set; }
+        public string FlowSubjectId { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string WorkID { get; set; }
 
-
-        //Получение выполненных студентом лабораторных работ по предмету
-        public static async Task<List<Lab>> GetM(string studentFlowId, string subjectFlowId)
+        public static async Task<List<LabWorkPlan>> GetCollectionAsync(string FlowSubjectId)
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/exec/{0}/{1}", studentFlowId, subjectFlowId));
+            //if (string.IsNullOrEmpty(id))
+            //    return new List<LabWorkPlan>();
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", FlowSubjectId));
+            var request = new RestRequest(Method.GET);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+            if (restResponse.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                List<LabWorkPlan> planWorks = result.Data.ToObject<List<LabWorkPlan>>();
+                return planWorks;
+            }
+            else
+                return new List<LabWorkPlan>();
+        }
+        public static async Task<dynamic> GetInstanceAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return null;
+
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", id));
             var request = new RestRequest(Method.GET);
             IRestResponse response = client.Execute(request);
             if (response.IsSuccessful)
             {
                 Response result = JsonConvert.DeserializeObject<Response>(response.Content);
-                List<Lab> labs = result.Data.ToObject<List<Lab>>();
+                LabWorkPlan subjects = result.Data.ToObject<LabWorkPlan>();
+                return subjects;
+            }
+            else
+                return null;
+        }
+
+        public async Task<bool> Push()
+        {
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}/{1}", 
+                FlowSubjectId, WorkID));
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
+            return restResponse.IsSuccessful;
+        }
+        public bool Delete()
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", ID));
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            IRestResponse response = client.Execute(request);
+            if (response.IsSuccessful)
+                return true;
+            else
+                return false;
+        }
+    }
+    public class ExecutedLabWork
+    {
+        public string ID { get; set; }
+        public string PlanId { get; set; }
+        public string Info { get; set; }
+        public string StudentFlowSubjectId { get; set; }        
+        
+
+        //Получение выполненных студентом лабораторных работ по предмету
+        public static async Task<List<ExecutedLabWork>> GetExec(string studentFlowId)
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/exec/{0}/{1}", studentFlowId));
+            var request = new RestRequest(Method.GET);
+            IRestResponse response = client.Execute(request);
+            if (response.IsSuccessful)
+            {
+                Response result = JsonConvert.DeserializeObject<Response>(response.Content);
+                List<ExecutedLabWork> labs = result.Data.ToObject<List<ExecutedLabWork>>();
                 return labs;
             }
             else
-                return new List<Lab>();
+                return new List<ExecutedLabWork>();
         }
         //Отметка о выполнении лабораторной работы
-        public async Task<bool> AddM()
+        public async Task<bool> AddExec()
         {
             string lab = JsonConvert.SerializeObject(this);
             var client = new RestClient("http://eljournal.ddns.net/api/LabWork/exec");
@@ -154,7 +228,7 @@ namespace WebApplication.Models
                 return false;
         }
         //Удаление отметки о выполнении лабораторной работы
-        public bool DelM()
+        public bool DeleteExec()
         {
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/exec/{0}", ID));
             var request = new RestRequest(Method.DELETE);
@@ -165,45 +239,6 @@ namespace WebApplication.Models
                 return true;
             else
                 return false;
-        }
-    }
-    
-    public class LabPlan
-    {
-        public string ID { get; set; }
-        public virtual Lab Work { get; set; }
-        public string FlowSubjectId { get; set; }
-        public DateTime? EndDate { get; set; }
-        public string WorkID { get; set; }
-
-        public static async Task<List<LabPlan>> GetCollectionAsync(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-                return new List<LabPlan>();
-
-            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", id));
-            var request = new RestRequest(Method.GET);
-            var cancellationTokenSource = new CancellationTokenSource();
-            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
-            if (restResponse.IsSuccessful)
-            {
-                Response result = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-                List<LabPlan> planWorks = result.Data.ToObject<List<LabPlan>>();
-                return planWorks;
-            }
-            else
-                return new List<LabPlan>();
-        }
-
-        public async Task<bool> Push()
-        {
-            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}/{1}", 
-                FlowSubjectId, WorkID));
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            var cancellationTokenSource = new CancellationTokenSource();
-            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
-            return restResponse.IsSuccessful;
         }        
     }
 }

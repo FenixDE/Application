@@ -55,11 +55,12 @@ namespace WebApplication.Models
             public string StudentId { get; set; }
             public string FlowSubjectId { get; set; }
 
-            public static async Task<List<StudentFlowSubject>> GetCollectionAsync(string flowSubjectId)
+            public static async Task<List<StudentFlowSubject>> GetCollectionAsync(string flowSubjectId, string studentId)
             {
-                var client = new RestClient(string.Format("http://eljournal.ddns.net/api/Students/flow/{0}", flowSubjectId));
+                var client = new RestClient("http://eljournal.ddns.net/api/Students/flow");
                 var request = new RestRequest(Method.GET);
-                request.AddHeader("Postman-Token", "b27d2b8f-718a-4d65-9f24-c1472244004d");
+                request.AddQueryParameter("flowSubjectId", flowSubjectId);
+                request.AddQueryParameter("studentId", studentId);
                 request.AddHeader("Cache-Control", "no-cache");
                 var cancellationTokenSource = new CancellationTokenSource();
                 IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
@@ -72,6 +73,7 @@ namespace WebApplication.Models
                 else
                     return new List<StudentFlowSubject>();
             }
+                       
 
             public async Task<bool> Add()
             {

@@ -31,7 +31,7 @@
                     <th>% выполнивших</th>
                 </tr>
             </thead>
-            @foreach (var work in (List<LabPlan>)ViewBag.workplan)
+            @foreach (var work in (List<LabWorkPlan>)ViewBag.workplan)
             {
                 <tr>
                     <td><a href="#">@work.Work.Name</a></td>@*здесь переход к странице лаб работы*@
@@ -63,7 +63,7 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title" id="AddLabel">Добавление группы</h3>
+                    <h3 class="modal-title" id="AddLabel">Добавление лабораторной</h3>
                 </div>
                 <div class="modal-body">
                     <form action="/Lab/plan" method="post">

@@ -1,0 +1,48 @@
+﻿@using WebApplication.Models
+@{
+    ViewBag.Title = "LabWorkStudent";
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Лабораторные работы</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Название работы</th>
+                    </tr>
+                </thead>
+                @*@{ ExecutedLabWork exlab = ViewBag.exlabs;
+                    //List<ExecutedLabWork> exl = (ExecutedLabWork.GetExec(exlab.PlanId).Result);
+                    List<ExecutedLabWork> exl = new List<ExecutedLabWork>();
+                    ExecutedLabWork executedLabWork = exl.Find(x => x.Succesful == true);
+                }
+                @foreach (var work in (List<LabWorkPlan>)ViewBag.workplan)
+                {
+                    if(executedLabWork!=null)
+                    {
+                        <tr>
+                            <td><a href="#">@work.Work.Name</a></td>
+                            <td><a href="#">@exl</a></td>
+                            @*viewbag.exlabs
+                            @*List<Response> my = new List<Response>();
+                                Response obj = my.Find(x => x.Succesful == true);
+                                if (obj != null)//действие;
+                        </tr>
+                    }*@
+            
+}
+
+
+            </table>
+        </div>
+      </div>
+</body>
+</html>
+
