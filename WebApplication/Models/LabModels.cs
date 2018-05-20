@@ -128,11 +128,11 @@ namespace WebApplication.Models
         public DateTime? EndDate { get; set; }
         public string WorkID { get; set; }
 
-        public static async Task<List<LabWorkPlan>> GetCollectionAsync(string FlowSubjectId)
+        public static async Task<List<LabWorkPlan>> GetCollectionAsync(string flowSubjectId)
         {
             //if (string.IsNullOrEmpty(id))
             //    return new List<LabWorkPlan>();
-            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", FlowSubjectId));
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", flowSubjectId));
             var request = new RestRequest(Method.GET);
             var cancellationTokenSource = new CancellationTokenSource();
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
@@ -197,8 +197,9 @@ namespace WebApplication.Models
         //Получение выполненных студентом лабораторных работ по предмету
         public static async Task<List<ExecutedLabWork>> GetExec(string studentFlowId)
         {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/exec/{0}/{1}", studentFlowId));
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/exec/{0}", studentFlowId));
             var request = new RestRequest(Method.GET);
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
             IRestResponse response = client.Execute(request);
             if (response.IsSuccessful)
             {

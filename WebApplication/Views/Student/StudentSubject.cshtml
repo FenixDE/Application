@@ -19,7 +19,7 @@
                 Subject subject = (Subject.GetInstanceAsync(fsubject.SubjectId).Result);
             <tr>
 
-                <td><a href="/Lab/LabWorkStudent/@student.StudentId">@subject.Name</a></td>
+                <td><a href="/Lab/exec/@student.ID/@student.FlowSubjectId">@subject.Name</a></td>
             </tr>
             }
         }       

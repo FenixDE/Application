@@ -18,26 +18,34 @@
                         <th>Название работы</th>
                     </tr>
                 </thead>
-                @*@{ ExecutedLabWork exlab = ViewBag.exlabs;
-                    //List<ExecutedLabWork> exl = (ExecutedLabWork.GetExec(exlab.PlanId).Result);
-                    List<ExecutedLabWork> exl = new List<ExecutedLabWork>();
-                    ExecutedLabWork executedLabWork = exl.Find(x => x.Succesful == true);
+
+                @{ 
+                    List< ExecutedLabWork> exlabs = ViewBag.exlabs;
                 }
                 @foreach (var work in (List<LabWorkPlan>)ViewBag.workplan)
                 {
-                    if(executedLabWork!=null)
-                    {
-                        <tr>
-                            <td><a href="#">@work.Work.Name</a></td>
-                            <td><a href="#">@exl</a></td>
-                            @*viewbag.exlabs
-                            @*List<Response> my = new List<Response>();
-                                Response obj = my.Find(x => x.Succesful == true);
-                                if (obj != null)//действие;
-                        </tr>
-                    }*@
-            
-}
+                    ExecutedLabWork exWork = exlabs.Find(x => x.PlanId == work.ID);
+                    <tr>
+                        <td><a href="#">@work.Work.Name</a></td>
+                        @if(exWork != null)
+                        {
+                            <td><font color="green">Выполнена</font></td>
+                            <td><a href="#" class="btn btn-danger">Снять отметку</a></td>
+                        }
+                        else
+                        {
+                            <td><font color="red">Не выполнена</font></td>
+                            <td>
+                                <form action="/Lab/exec" method="post">
+                                    <input type="hidden" name="PlanId" value="@work.ID" />
+                                    <input type="hidden" name="StudentFlowSubjectId" value="@ViewBag.studentFlowId" />
+                                    <input type="submit" value="Отметить" class="btn btn-success" />
+                                </form>
+                            </td>
+                        }
+                    </tr>
+
+                }
 
 
             </table>

@@ -86,25 +86,36 @@ namespace WebApplication.Controllers
 
         // получить список выполненных студентом лаб работ по предмету (все рег. пользователи)
         [HttpGet]
-        [Route("LabWork/exec/{studentFlowId}/{subjectFlowId}")]
+        [Route("Lab/exec/{studentFlowId}/{subjectFlowId}")]
         public async Task<ActionResult> GetExec(string studentFlowId, string subjectFlowId)
         {
+            
             FlowSubject fSubject = await FlowSubject.GetInstanceAsync(subjectFlowId);
+            var exLabs = await ExecutedLabWork.GetExec(studentFlowId);
+            var workPlan = await LabWorkPlan.GetCollectionAsync(subjectFlowId);
+
             if (fSubject == null)
                 return View("~/Views/Shared/Error.cshtml");
 
-            var exLabs = await ExecutedLabWork.GetExec(studentFlowId);
             ViewBag.exLabs = exLabs;
-            return View("/LabWorkStudent");
+            ViewBag.fSubject = fSubject;
+            ViewBag.workPlan = workPlan;
+            ViewBag.studentFlowId = studentFlowId;
+            return View("LabWorkStudent");
         }
 
         // установить лаб работу из плана как выполненную студентом (преподаватель, администратор)
         [HttpPost]
-        [Route("LabWork/exec")]
+        [Route("Lab/exec")]
         public async Task<ActionResult> PostExec(ExecutedLabWork exLab)
         {
+            if(exLab == null)
+                return View("~/Views/Shared/Error.cshtml");
 
-            return null;
+            if (await exLab.AddExec())
+                return Redirect(Request.UrlReferrer.ToString());
+            else
+                return View("~/Views/Shared/Error.cshtml");
         }
 
         //[HttpGet]

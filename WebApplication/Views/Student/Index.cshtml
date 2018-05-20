@@ -17,7 +17,7 @@
             {
                 Person studentInfo = Person.GetInstanceAsync(student.PersonId).Result;
                 <tr>
-                    <td><a href="/Student/StudentSubject/@student.ID">@studentInfo.ToString()</a></td>
+                    <td><a href="/Student/@student.ID">@studentInfo.ToString()</a></td>
                     <td><a href="/Student/Del/@student.ID" class="btn btn-primary btn-danger">Удалить</a></td>
                 </tr>
             }
