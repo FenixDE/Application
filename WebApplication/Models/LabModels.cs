@@ -63,10 +63,10 @@ namespace WebApplication.Models
         /// Сохраняет текущий объект Faculty в БД
         /// </summary>
         /// <returns>True, если объект был добавлен в БД</returns>
-        public async Task<bool> Push()
+        public async Task<bool> Push(string id)
         {
             string lab = JsonConvert.SerializeObject(this);
-            var client = new RestClient("http://eljournal.ddns.net/api/LabWork");
+            var client = new RestClient(string.Format("http://eljournal.ddns.net/api/LabWork/{0}",id));
             var request = new RestRequest(Method.POST);
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Content-Type", "application/json");
@@ -173,7 +173,7 @@ namespace WebApplication.Models
             IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
             return restResponse.IsSuccessful;
         }
-        public bool Delete()
+        public bool DeleteOfPlan()
         {
             var client = new RestClient(String.Format("http://eljournal.ddns.net/api/LabWork/plan/{0}", ID));
             var request = new RestRequest(Method.DELETE);

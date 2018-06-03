@@ -43,15 +43,8 @@
                         <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Поток">
 
                         <label for="AltName">Альтернативное имя</label>
-                        <input type="text" class="form-control" id="AltName" name="AltName" aria-describedby="name" placeholder="Введите альт. имя">
-                        
-                        @*@foreach (var departmen in ViewBag.departments)
-                        {
-                            <option value="@departmen.ID">@departmen.Name</option>
-                        }
-                                </select><p></p>  *@
+                        <input type="text" class="form-control" id="AltName" name="AltName" aria-describedby="name" placeholder="Введите альт. имя">                        
                         <label for="Department">Кафедра</label>
-                        @*<input type="text" class="form-control" id="Department" name="DepartmentId" aria-describedby="department" placeholder="Введите кафедру">*@
                         <select class="form-control" name="DepartmentId" id="Department">
                             @foreach (var department in ViewBag.departments)
                                 {

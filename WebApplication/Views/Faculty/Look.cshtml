@@ -1,4 +1,4 @@
-﻿
+﻿@using WebApplication.Models;
 @{
     ViewBag.Title = "Look";
 }
@@ -21,7 +21,7 @@
             foreach (var group in ViewBag.groups)
             {
                 <p>
-                    <a href="/Group/Group/@group.ID" class="btn btn-primary">@group.Name</a>
+                    <a href="/Group/Group/@group.ID">@group.Name</a>
                     <a href="/Group/Del/@group.ID" class="btn btn-primary btn-danger">Удалить</a>
                 </p>
             }
@@ -31,35 +31,43 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h3 class="modal-title" id="AddLabel">Добавление группы</h3>
-                </div>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title" id="AddLabel">Добавление группы</h3>
+                    </div>
                     <div class="modal-body">
                         @using (Html.BeginForm("Add", "Group", FormMethod.Post))
-    {
-                    <div class="form-group">
-                        <label for="Name">Название</label>
-                        <input type="text" class="form-control" id="Name" name="Name" placeholder="Введите название">
+                        {
+                            <div class="form-group">
+                                <label for="Name">Название</label>
+                                <input type="text" class="form-control" id="Name" name="Name" required placeholder="Введите название">
 
-                        <label for="Description">Описание</label>
-                        <input type="text" class="form-control" id="Description" name="Description" aria-describedby="Description" placeholder="Введите описание">
+                                <label for="Description">Описание</label>
+                                <input type="text" class="form-control" id="Description" name="Description" placeholder="Введите описание">
 
-                        <input type="hidden" name="FacultyId" value="@ViewBag.faculty.ID" />
-                        <label for="CuratorId">Curator</label>
-                        <input type="text" class="form-control" id="CuratorId" name="CuratorId" aria-describedby="CuratorId" placeholder="">
+                                <input type="hidden" name="FacultyId" value="@ViewBag.faculty.ID" />
+                                <label for="CuratorId">Curator</label>
+                                @{
+                                    List<Person> people = Person.GetCollectionAsync().Result;
+                                }
+                                <select id="AddLabel" name="CuratorId">
+                                    @foreach (var person in people)
+                                    {
+                                        <option value="@person.ID">@person.ToString()</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Добавить</button>
+                            </div>
+                        }
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary">Добавить</button>
-                    </div>
-}
-                    </div>
-                </div>                
+                </div>
             </div>
         </div>
-    <ul class="nav navbar-nav navbar-right">
-                    <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
-                </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+        </ul>
     </div>
 </div>

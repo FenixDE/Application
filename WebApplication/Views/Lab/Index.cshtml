@@ -1,4 +1,5 @@
-﻿@{
+﻿@using WebApplication.Models;
+@{
     ViewBag.Title = "Index";
 }
 <!DOCTYPE HTML>
@@ -15,15 +16,15 @@
         </tr>
 
         @if (ViewBag.labs != null)
-    {
-        foreach (var lab in ViewBag.labs)
         {
-            <tr>
-                <td><a href="/Lab/Lab/@lab.ID">@lab.Name</a></td>
-                <td><a href="/Lab/Del/@lab.ID" class="btn btn-primary btn-danger">Удалить</a></td>
-            </tr>
-    }
-}
+            foreach (var lab in ViewBag.labs)
+            {
+                <tr>
+                    <td><a href="/Lab/Lab/@lab.ID">@lab.Name</a></td>
+                    <td><a href="/Lab/Del/@lab.ID" class="btn btn-primary btn-danger">Удалить</a></td>
+                </tr>
+            }
+        }
     </table>
     <div class="modal fade" id="Add" tabindex="-1" role="dialog" aria-labelledby="Add" aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">
@@ -32,27 +33,39 @@
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title" id="AddLabel">Добавление лаораторной работы</h3>
+                    <h3 class="modal-title" id="AddLabel">Добавление лабораторной работы</h3>
                 </div>
                 <div class="modal-body">
                     @using (Html.BeginForm("Add", "Lab", FormMethod.Post))
-    {
-                <div class="form-group">
-                    <label for="Abbreviation">Аббревиатура</label>
-                    <input type="text" class="form-control" id="Abbreviation" name="Name" placeholder="Аббревиатура">
-                
-                    <label for="FullName">Описание</label>
-                    <input type="text" class="form-control" id="FullName" name="Info" aria-describedby="name" placeholder="Введите описание">
+                    {
+                        <div class="form-group">
+                            <label for="Name">Название</label>
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder="Название">
+                            <label for="Advanced">Информация</label>
+                            <input type="text" class="form-control" id="Advanced" name="Advanced" aria-describedby="name" placeholder="Введите описание">
+                            <label for="Author">Афтор</label>
+                            @{
+                                List<Person> people = Person.GetCollectionAsync().Result;
+                            }
+                            <select id="AddLabel" name="AuthorId">
+                                @foreach (var person in people)
+                                {
+                                    <option value="@person.ID">@person.ToString()</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary">Добавить</button>
+                        </div>
+                    }
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary">Добавить</button>
-                </div>
-}
-                </div>
-                </div>                
             </div>
         </div>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a class="btn btn-block btn-lg" data-toggle="modal" data-target="#Add">Добавить &equiv;</a></li>
+    </ul>
 </body>
 </html>
 

@@ -17,14 +17,14 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Index()
         {
             string fileURL = ConfigurationManager.AppSettings["RequestPath"];
-            ViewBag.labs = await Lab.GetCollectionAsync();
+            ViewBag.labs = await Models.Lab.GetCollectionAsync();
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add(Lab lab)
+        public async Task<ActionResult> Add(Lab lab, string id)
         {
-            bool result = await lab.Push();
+            bool result = await lab.Push(id);
             if (result)
                 return Redirect("/Index");
             else
@@ -53,7 +53,7 @@ namespace WebApplication.Controllers
         [HttpGet]
         public async Task<ActionResult> Up(string ID)
         {
-            Lab lab = await Lab.GetInstanceAsync(ID);
+            Lab lab = await Models.Lab.GetInstanceAsync(ID);
             if (lab == null)
                 ViewBag.lab = lab; //запись полей
             return View();
@@ -66,7 +66,7 @@ namespace WebApplication.Controllers
             ViewBag.subflow = subflow;
             var workplan = await LabWorkPlan.GetCollectionAsync(fsid);
             ViewBag.workplan = workplan;
-            var works = await Lab.GetCollectionAsync();
+            var works = await Models.Lab.GetCollectionAsync();
             ViewBag.works = works;
             return View("PlanLab");
         }
@@ -80,6 +80,20 @@ namespace WebApplication.Controllers
 
             if (await plan.Push())
                 return Redirect(string.Format("/Lab/plan/{0}", plan.FlowSubjectId));
+            else
+                return View("~/Views/Shared/Error.cshtml");
+        }
+        //Удалить лаб раб из плана
+        [HttpPost]
+        [Route("Lab/plan/{id}")]
+        public async Task<ActionResult> DeleteLabPlan(string id)
+        {
+            LabWorkPlan plan = new LabWorkPlan
+            {
+                ID = id
+            };
+            if (plan.DeleteOfPlan())
+                return Redirect(Request.UrlReferrer.ToString());
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
@@ -117,37 +131,15 @@ namespace WebApplication.Controllers
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult> Get(string fsid)
-        //{
-        //    var subflow = await FlowSubject.GetInstanceAsync(fsid);
-        //    ViewBag.subflow = subflow;
-        //    //var sts = await Student.GetCollectionAsync();
-        //    //ViewBag.sts = await Lab.GetM(subflow);
-        //    return View();
-        //}
-
-
-        //[HttpPost]
-        //public async Task<ActionResult> AddEx(LabWork lab)
-        //{
-        //    bool result = await lab.Add();
-        //    if (result)
-        //        return Redirect("/Index");
-        //    else
-        //        return View("~/Views/Shared/Error.cshtml");
-        //}
-
-        //[HttpGet]
-        //public async Task<ActionResult> D(string ID)
-        //{
-        //    LabWork lab = new LabWork();
-        //    lab.ID = ID;
-        //    if (lab?.Del() ?? false)
-        //        return Redirect("/Lab");
-        //    else
-        //        return View("~/Views/Shared/Error.cshtml");
-        //}        
+        public async Task<ActionResult> Lab(string ID)
+        {
+            if (ID != null)
+            {
+                Lab lab = await Models.Lab.GetInstanceAsync(ID);
+                ViewBag.lab = lab;               
+                return View("Look");
+            }
+            else return View("~/Views/Shared/Error.cshtml");
+        }
     }
 }

@@ -48,6 +48,33 @@ namespace WebApplication.Models
                 return new List<Student>();
         }
 
+        public async Task<bool> Push()
+        {
+            string subject = JsonConvert.SerializeObject(this);
+            var client = new RestClient("http://eljournal.ddns.net/api/Students");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            request.AddParameter("undefined", subject, ParameterType.RequestBody);
+            var cancellationTokenSource = new CancellationTokenSource();
+            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
+            return restResponse.IsSuccessful;
+        }
+
+
+        public bool Delete()
+        {
+            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Students/{0}", ID));
+            var request = new RestRequest(Method.DELETE);
+            request.AddHeader("Cache-Control", "no-cache");
+            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
+            IRestResponse response = client.Execute(request);
+            if (response.IsSuccessful)
+                return true;
+            else
+                return false;
+        }
 
         public class StudentFlowSubject
         {
@@ -98,36 +125,6 @@ namespace WebApplication.Models
                 IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token);
                 return restResponse.IsSuccessful;
             }
-        }
-
-
-
-        public async Task<bool> Push()
-        {
-            string subject = JsonConvert.SerializeObject(this);
-            var client = new RestClient("http://eljournal.ddns.net/api/Students");
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Cache-Control", "no-cache");
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            request.AddParameter("undefined", subject, ParameterType.RequestBody);
-            var cancellationTokenSource = new CancellationTokenSource();
-            IRestResponse restResponse = await client.ExecuteTaskAsync(request, cancellationTokenSource.Token); //ассинхронный метод                                                                                                                
-            return restResponse.IsSuccessful;
-        }
-                
-
-        public bool Delete()
-        {
-            var client = new RestClient(String.Format("http://eljournal.ddns.net/api/Students/{0}", ID));
-            var request = new RestRequest(Method.DELETE);
-            request.AddHeader("Cache-Control", "no-cache");
-            request.AddHeader("Authorization", "38A1903A-622D-4201-BC6C-25E23D805771");
-            IRestResponse response = client.Execute(request);
-            if (response.IsSuccessful)
-                return true;
-            else
-                return false;
         }
     }
 }

@@ -33,6 +33,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
+        [Route("Student/Add")]
         public async Task<ActionResult> Add(Student student)
         {
             if(await student.Push())
@@ -64,43 +65,31 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        [Route("Student/Del/registry/{ID}")]
-        public async Task<ActionResult> DelRegistration(string ID)
+        [Route("Student/Del/registry/{studentRegId}")]
+        public async Task<ActionResult> DelRegistration(string studentRegId)
         {
             Student.StudentFlowSubject registry = new Student.StudentFlowSubject
             {
-                ID = ID
+                ID = studentRegId
             };
             if (await registry.Delete())
                 return Redirect(Request.UrlReferrer.ToString());
             else
                 return View("~/Views/Shared/Error.cshtml");
         }
-        //
-        //[HttpGet]
-        //[Route("Student/{flowSubjectId}/registry")]
-        //[AllowCrossSiteJsonAttribute]
-        //public async Task<ActionResult> GetStudentRegistry(string flowSubjectId)
-        //{
-        //    var students = await Student.StudentFlowSubject.GetCollectionAsync(flowSubjectId);
-        //    ViewBag.students = students;
-        //    ViewBag.flowSubjectId = flowSubjectId;
-        //    //'Access-Control-Allow-Origin'
-            
-        //    return View("Registration");
-        //}
-        //
-        //[HttpGet]
-        //[Route("Student/{flowSubjectId}/labwork")]
-        //[AllowCrossSiteJsonAttribute]
-        //public async Task<ActionResult> GetStudentLab(string flowSubjectId)
-        //{
-        //    var students = await Student.StudentFlowSubject.GetCollectionAsync(flowSubjectId);
-        //    ViewBag.students = students;
-        //    ViewBag.flowSubjectId = flowSubjectId;
-        //    //'Access-Control-Allow-Origin'
-        //    return View("LabWorkStudents");
-        //}
+
+        [HttpGet]
+        [Route("Student/{flowSubjectId}/registry")]
+        [AllowCrossSiteJsonAttribute]
+        public async Task<ActionResult> GetStudentRegistry(string flowSubjectId)
+        {
+            var students = await Student.StudentFlowSubject.GetCollectionAsync(flowSubjectId,null);
+            ViewBag.students = students;
+            ViewBag.flowSubjectId = flowSubjectId;
+            //'Access-Control-Allow-Origin'
+
+            return View("Registration");
+        }
 
         [HttpGet]
         [Route("Student/{StudentId}")]
@@ -112,7 +101,7 @@ namespace WebApplication.Controllers
             ViewBag.StudentId = StudentId;
             return View("StudentSubject");
         }
-
+        
         [HttpGet]
         [Route("Student/registry/{flowSubjectId}")]
         public async Task<ActionResult> AddRegistration(string flowSubjectId)
@@ -151,15 +140,5 @@ namespace WebApplication.Controllers
                     return View("~/Views/Shared/Error.cshtml");
             }
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult> LabWorkStudents(string flowSubjectId)
-        //{
-        //    var fss = await FlowSubject.GetInstanceAsync(flowSubjectId);
-        //    ViewBag.fss = fss;
-        //    var lp = await Lab.GetInstanceAsync(flowSubjectId);
-        //    ViewBag.lp = lp;
-        //    return View("LabWorkStudents");
-        //}
     }
 }

@@ -21,77 +21,70 @@
             </thead>
             <tbody>
                 @if (ViewBag.sFlows != null)
-            {
-                foreach (var flow in ((List<FlowSubject>)ViewBag.sFlows))
                 {
-                    <tr>
-                        @{string flowName = (Flow.GetInstanceAsync(flow.FlowId).Result).Name;}
-                        <td>@flowName</td>
-                        @{ string teachName = (Person.GetInstanceAsync(flow.TeacherId).Result).Name;}
-                        <td>Преподает: @teachName</td>
-                        <td><a href="/Subject/FlowSubjectM/@flow.ID">Перейти</a></td>
-                    </tr>
-            }
-        }
+                    foreach (var flow in ((List<FlowSubject>)ViewBag.sFlows))
+                    {
+                        <tr>
+                            @{string flowName = (Flow.GetInstanceAsync(flow.FlowId).Result).Name;}
+                            <td>@flowName</td>
+                            @{ string teachName = (Person.GetInstanceAsync(flow.TeacherId).Result).Name;}
+                            <td>Преподает: @teachName</td>
+                            <td><a href="/Subject/FlowSubjectM/@flow.ID">Перейти</a></td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
         <p><h3>Выберите поток:</h3></p>
         @using (Html.BeginForm("AddToFlow", "Subject", FormMethod.Post))
-    {
-        <input type="hidden" name="SubjectId" value="@ViewBag.subject.ID" />
-        <input type="hidden" name="id" value="@ViewBag.subject.ID" />
-        <p>
-            <select name="FlowId">
-                @foreach (var flow in ViewBag.flows)
-            {
-                <option value="@flow.ID">@flow.Name</option>
-        }
-            </select>
-        </p>
-        <p>
-            <select name="TeacherId">
-                @foreach (var person in ViewBag.people)
-            {
-                <option value="@person.ID">@person.ToString()</option>
-        }
-            </select>
-            @* Здесь нужно будет добавить выбор еще для двух преподавателей *@
-            <select name="Teacher2Id">
-                @foreach (var person in ViewBag.people)
-            {
-                <option value="@person.ID">@person.ToString()</option>
-        }
-            </select>
-            <select name="Teacher3Id">
-                @foreach (var person in ViewBag.people)
-            {
-                <option value="@person.ID">@person.ToString()</option>
-        }
-            </select>
+        {
+            <input type="hidden" name="SubjectId" value="@ViewBag.subject.ID" />
+            <input type="hidden" name="id" value="@ViewBag.subject.ID" />
+            <p>
+                <select name="FlowId">
+                    @foreach (var flow in ViewBag.flows)
+                    {
+                        <option value="@flow.ID">@flow.Name</option>
+                    }
+                </select>
+            </p>
+            <p>
+                <select name="TeacherId">
+                    @foreach (var person in ViewBag.people)
+                    {
+                        <option value="@person.ID">@person.ToString()</option>
+                    }
+                </select>
+                @* Здесь нужно будет добавить выбор еще для двух преподавателей *@
+                <select name="Teacher2Id">
+                    @foreach (var person in ViewBag.people)
+                    {
+                        <option value="@person.ID">@person.ToString()</option>
+                    }
+                </select>
+                <select name="Teacher3Id">
+                    @foreach (var person in ViewBag.people)
+                    {
+                        <option value="@person.ID">@person.ToString()</option>
+                    }
+                </select>
 
-        </p>
-        <p>
-            <select name="SemesterId">
-                @foreach(var sem in ViewBag.semesters)
-                {
-                    <option value="@sem.ID">@sem.Name</option>
-                }
-            </select>
-        </p>
-        <p><input type="submit" class="btn btn-primary" value="Добавить в поток"></p>
-}
+            </p>
+            <p>
+                <select name="SemesterId">
+                    @foreach (var sem in ViewBag.semesters)
+                    {
+                        <option value="@sem.ID">@sem.Name</option>
+                    }
+                </select>
+            </p>
+            <p><input type="submit" class="btn btn-primary" value="Добавить в поток"></p>
+        }
     </div>
-    @*<div class="col-md-3">
-            @if (ViewBag.subjects != null)
-            {
-                <p><h2>Предметы: </h2></p>
-                foreach (var subject in ViewBag.subjects)
-                {
-                    <p>
-                        <a href="/Subject/Subject/@subject.ID" class="btn btn-primary">@subject.Name</a>
-                        <a href="/Subject/Del/@subject.ID" class="btn btn-primary btn-danger">Удалить</a>
-                    </p>
-                }
-            }
-        </div>*@
 </div>
+    @*<p>
+        <a class="btn btn-default btn-sm" href="/Lab/Index">Добавить лабораторную</a>
+        <a class="btn btn-default btn-sm" href="#">Добавить практическую</a>
+        <a class="btn btn-default btn-sm" href="#">Добавить самостоятельную</a>
+        <a class="btn btn-default btn-sm" href="#">Добавить курсовую</a>
+    </p>*@   

@@ -23,10 +23,10 @@ namespace WebApplication.Controllers
         public async Task<ActionResult> Add(Group group)
         {
             bool result = await group.Push();
-            if(result)
-                return Redirect("/Faculty");
-            else
-                return View("~/Views/Shared/Error.cshtml");
+            //if(result)
+                return Redirect(Request.UrlReferrer.ToString());
+            //else
+            //    return View("~/Views/Shared/Error.cshtml");
         }
 
         [HttpPost]
@@ -67,7 +67,7 @@ namespace WebApplication.Controllers
             Group group = await Models.Group.GetInstanceAsync(ID);
             group.ID = ID;
             if (group.Delete())
-                return Redirect(string.Format("/Faculty/Look/{0}", group.FacultyId));
+                return Redirect(Request.UrlReferrer.ToString());
             else
                 return View("~/Views/Shared/Error.cshtml");
         }

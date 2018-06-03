@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
         {
             bool result = await Models.Subject.AddToFlow(flowSubject);
             if (result)
-                return Redirect("/Subject");
+                return Redirect(Request.UrlReferrer.ToString());
             else
                 return View("~/Views/Shared/Error.cshtml");
         }

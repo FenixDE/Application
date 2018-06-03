@@ -28,17 +28,17 @@
             <thead>
                 <tr>
                     <th>Название работы</th>
-                    <th>% выполнивших</th>
+                    @*<th>% выполнивших</th>*@
                 </tr>
             </thead>
             @foreach (var work in (List<LabWorkPlan>)ViewBag.workplan)
             {
                 <tr>
-                    <td><a href="#">@work.Work.Name</a></td>@*здесь переход к странице лаб работы*@
-                    <td><a href="/Student/@subflow.ID/labwork">0%</a></td> @*здесь переход к студентам, выполнившим лаб. работу*@
+                    <td><a href="/Lab/Lab/@work.Work.ID">@work.Work.Name</a></td>@*здесь переход к странице лаб работы*@
+                    @*<td><a href="/Student/@subflow.ID/labwork">0%</a></td>*@ @*здесь переход к студентам, выполнившим лаб. работу*@
+                    @*<td><a href="/Lab/plan/DeleteLabPlan/@work.ID" class="btn btn-danger">Удалить из плана</a></td>*@
                 </tr>
             }
-
         </table>
      </div>
     @*<div class="row">
